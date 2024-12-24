@@ -103,11 +103,16 @@ class Book
         $conn = $database->connect();
 
         if ($conn) {
-            // Préparation de la requête de suppression
-            $stmt = $conn->prepare("DELETE FROM books WHERE id = ?");
-            $stmt->bindValue(1, $this->id, PDO::PARAM_INT); // Liaison avec bindValue()
-            $stmt->execute();
+            try {
+                $stmt = $conn->prepare("DELETE FROM books WHERE id = ?");
+                $stmt->bindValue(1, $this->id, PDO::PARAM_INT);
+                return $stmt->execute();
+            } catch (PDOException $e) {
+                echo "Erreur lors de la suppression: " . $e->getMessage();
+                return false;
+            }
         }
+        return true;
     }
 
     // Getter et Setter pour l'ID
