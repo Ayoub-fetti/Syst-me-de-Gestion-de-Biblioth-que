@@ -13,8 +13,8 @@ $categories = $categorie->getAllCategories();
 
 
 // Handle Delete
-if (isset($_POST['delete']) && isset($_POST['category_id'])) {
-    $book->setId($_POST['category_id']);
+if (isset($_POST['delete']) && isset($_POST['categorie_id'])) {
+    $book->setId($_POST['categorie_id']);
     if ($book->deleteCategory()) {
         $message = "Categorie supprimé avec succès";
     }
@@ -40,7 +40,7 @@ if (isset($_POST['delete']) && isset($_POST['category_id'])) {
             </div>
         <?php endif; ?>
 
-        <a href="add_book.php" class="btn btn-primary mb-3">Ajouter un livre</a>
+        <a href="add_categorie.php" class="btn btn-primary mb-3">Ajouter un livre</a>
 
         <table class="table">
             <thead>

@@ -6,9 +6,10 @@ class Categories {
     private $id;
     private $name;
 
-public function __construct($name,$id){
-    $this->name=$name;
+public function __construct($id,$name){
     $this->id=$id;
+    $this->name=$name;
+    
 }
 
 public function getNameCategory(){
@@ -93,7 +94,7 @@ public function saveCategory()
 
     if ($conn) {
         try {
-            $stmt = $conn->prepare("INSERT INTO category (name) VALUES (?)");
+            $stmt = $conn->prepare("INSERT INTO categories (name) VALUES (?)");
             $stmt->bindValue(1, $this->name, PDO::PARAM_STR);
 
             return $stmt->execute();
