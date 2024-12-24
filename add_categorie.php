@@ -12,7 +12,7 @@ $conn = $database->connect();
 
 if (isset($_POST['submit'])) {
     // Récupérer les données du formulaire du categorie
-    $name = $_POST['id'] ?? '';
+    $id = $_POST['id'] ?? '';
     $name = $_POST['name'] ?? '';
 
     // Créer et sauvegarder la categorie
@@ -40,7 +40,7 @@ if (isset($_POST['submit'])) {
         <form method="POST" enctype="multipart/form-data">
             <div class="mb-3">
                 <label class="form-label">Nom de Categorie</label>
-                <input type="text" name="title" class="form-control" required>
+                <input type="text" name="name" class="form-control" required>
             </div>
             
             <button type="submit" name="submit" class="btn btn-primary">Ajouter</button>
