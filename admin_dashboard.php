@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . 'config/config.php';
+require_once 'connection.php';
 session_start();
 ?>
 <!DOCTYPE html>
@@ -34,9 +34,7 @@ session_start();
       </span>
      </a>
      <div class="mt-5">
-      <p class="text-gray-400 uppercase text-xs px-3">
-       UI Element
-      </p>
+  
       <a class="flex items-center p-3 hover:bg-blue-800 rounded-lg" href="<?php echo BASE_URL; ?>/views/components/index.php">
        <i class="fas fa-cube">
        </i>
@@ -46,9 +44,6 @@ session_start();
       </a>
      </div>
      <div class="mt-5">
-      <p class="text-gray-400 uppercase text-xs px-3">
-       Forms &amp; Table
-      </p>
       <a class="flex items-center p-3 hover:bg-blue-800 rounded-lg" href="<?php echo BASE_URL; ?>/views/forms/index.php">
        <i class="fas fa-edit">
        </i>
@@ -65,9 +60,6 @@ session_start();
       </a>
      </div>
      <div class="mt-5">
-      <p class="text-gray-400 uppercase text-xs px-3">
-       Chart &amp; Maps
-      </p>
       <a class="flex items-center p-3 hover:bg-blue-800 rounded-lg" href="<?php echo BASE_URL; ?>/views/charts/index.php">
        <i class="fas fa-chart-bar">
        </i>
@@ -84,9 +76,6 @@ session_start();
       </a>
      </div>
      <div class="mt-5">
-      <p class="text-gray-400 uppercase text-xs px-3">
-       Pages
-      </p>
       <a class="flex items-center p-3 hover:bg-blue-800 rounded-lg" href="<?php echo BASE_URL; ?>/views/auth/login.php">
        <i class="fas fa-user">
        </i>
@@ -110,40 +99,23 @@ session_start();
      <h1 class="text-2xl font-semibold">
       Dashboard
      </h1>
-     <div class="flex items-center space-x-4">
-      <div class="relative">
-       <button class="flex items-center bg-white p-2 rounded-lg shadow">
-        <span class="mr-2">
-         Dropdown
-        </span>
-        <i class="fas fa-chevron-down">
-        </i>
-       </button>
-      </div>
-      <div class="flex items-center space-x-2">
-       <i class="fas fa-bell text-gray-600">
-       </i>
-       <i class="fas fa-cog text-gray-600">
-       </i>
-      </div>
-     </div>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
      <div class="bg-white p-4 rounded-lg shadow">
       <div class="flex items-center justify-between">
        <div>
         <p class="text-gray-600">
-         Daily Sales
+         Utilisateurs
         </p>
         <p class="text-2xl font-semibold text-green-500">
-         $ 249.95
+         4
         </p>
        </div>
-       <i class="fas fa-arrow-up text-green-500">
+       <i class="fas fa-user text-green-500"></i>
        </i>
       </div>
       <div class="mt-4">
-       <div class="h-2 bg-green-500 rounded-full" style="width: 67%;">
+       <div class="h-2 bg-green-500 rounded-full" style="width: 100%;">
        </div>
       </div>
      </div>
@@ -151,38 +123,61 @@ session_start();
       <div class="flex items-center justify-between">
        <div>
         <p class="text-gray-600">
-         Monthly Sales
-        </p>
-        <p class="text-2xl font-semibold text-red-500">
-         $ 2,942.32
-        </p>
-       </div>
-       <i class="fas fa-arrow-down text-red-500">
-       </i>
-      </div>
-      <div class="mt-4">
-       <div class="h-2 bg-purple-500 rounded-full" style="width: 36%;">
-       </div>
-      </div>
-     </div>
-     <div class="bg-white p-4 rounded-lg shadow">
-      <div class="flex items-center justify-between">
-       <div>
-        <p class="text-gray-600">
-         Yearly Sales
+         Categories
         </p>
         <p class="text-2xl font-semibold text-green-500">
-         $ 8,638.32
+         120
         </p>
        </div>
-       <i class="fas fa-arrow-up text-green-500">
+      
+       <i class="fas fa-bookmark text-green-500"></i>
        </i>
       </div>
       <div class="mt-4">
-       <div class="h-2 bg-green-500 rounded-full" style="width: 80%;">
+       <div class="h-2 bg-green-500 rounded-full" style="width: 100%;">
        </div>
       </div>
      </div>
+     <div class="bg-white p-4 rounded-lg shadow">
+      <div class="flex items-center justify-between">
+       <div>
+        <p class="text-gray-600">
+         Livres réservé
+        </p>
+        <p class="text-2xl font-semibold text-green-500">
+         30
+        </p>
+       </div>
+     
+       <i class="fas fa-book text-green-500"></i>
+       </i>
+      </div>
+      <div class="mt-4">
+       <div class="h-2 bg-green-500 rounded-full" style="width: 100%;">
+       </div>
+      </div>
+     </div>
+     <div class="bg-white p-4 rounded-lg shadow">
+      <div class="flex items-center justify-between">
+       <div>
+        <p class="text-gray-600">
+         Livres emprientés
+        </p>
+        <p class="text-2xl font-semibold text-green-500">
+         12
+        </p>
+       </div>
+       
+       <i class="fas fa-book-open text-green-500"></i>
+       </i>
+      </div>
+      <div class="mt-4">
+       <div class="h-2 bg-green-500 rounded-full" style="width: 100%;">
+       </div>
+      </div>
+     </div>
+
+
     </div>
     <div class="bg-white p-6 rounded-lg shadow mb-6">
      <h2 class="text-xl font-semibold mb-4">
