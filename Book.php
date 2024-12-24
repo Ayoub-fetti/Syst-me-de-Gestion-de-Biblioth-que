@@ -70,7 +70,7 @@ class Book
             $stmt = $conn->prepare("SELECT * FROM books WHERE id=?");
             $stmt->bindValue(1, $id, PDO::PARAM_INT); // Liaison avec bindValue() et spécification du type
             $stmt->execute();
-            $result = $stmt->fetch(PDO::FETCH_ASSOC); // Assurez-vous de récupérer un seul résultat
+            $result = $stmt->fetch(PDO::FETCH_ASSOC); 
             return $result;
         }
     }
