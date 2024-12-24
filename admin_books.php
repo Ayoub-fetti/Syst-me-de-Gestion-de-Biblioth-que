@@ -4,6 +4,11 @@ include 'Book.php';
 $book = new Book("", "", 0, "", "", "");
 $message = '';
 
+
+// Get all books
+$books = $book->getAllBooks();
+
+
 // Handle Delete
 if (isset($_POST['delete']) && isset($_POST['book_id'])) {
     $book->setId($_POST['book_id']);
@@ -12,8 +17,7 @@ if (isset($_POST['delete']) && isset($_POST['book_id'])) {
     }
 }
 
-// Get all books
-$books = $book->getAllBooks();
+
 ?>
 
 <!DOCTYPE html>
