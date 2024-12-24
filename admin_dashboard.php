@@ -1,6 +1,47 @@
 <?php
 require_once 'connection.php';
+require_once 'classes/User.php';
 session_start();
+
+$db = new Database();
+$pdo = $db->connect();
+
+// Création de l'instance User et récupération des utilisateurs
+$user = new User($pdo);
+$users = $user->getAllUsers();
+
+// nombre d'utilisateurs
+$userQuery = $pdo->query("SELECT COUNT(*) as total_users FROM users");
+$userCount = $userQuery->fetch(PDO::FETCH_ASSOC)['total_users'];
+
+// nombre total des livres
+$totalBooksQuery = $pdo->query("SELECT COUNT(*) as total_books FROM books");
+$totalBooksCount = $totalBooksQuery->fetch(PDO::FETCH_ASSOC)['total_books'];
+
+// nombre de categories
+$categoryQuery = $pdo->query("SELECT COUNT(*) as total_categories FROM categories");
+$categoryCount = $categoryQuery->fetch(PDO::FETCH_ASSOC)['total_categories'];
+
+// nombre de livres reserves
+$reservedQuery = $pdo->query("SELECT COUNT(*) as total_reserved FROM books WHERE status = 'reserved'");
+$reservedCount = $reservedQuery->fetch(PDO::FETCH_ASSOC)['total_reserved'];
+
+// nombre de livres empruntes
+$borrowedQuery = $pdo->query("SELECT COUNT(*) as total_borrowed FROM books WHERE status = 'borrowed'");
+$borrowedCount = $borrowedQuery->fetch(PDO::FETCH_ASSOC)['total_borrowed'];
+
+// Traitement du changement de rôle
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['userId']) && isset($_POST['newRole'])) {
+    $result = $user->changeUserRole($_POST['userId'], $_POST['newRole']);
+    if ($result['success']) {
+        $_SESSION['success_message'] = "Rôle mis à jour avec succès";
+    } else {
+        $_SESSION['error_message'] = "Erreur lors de la mise à jour du rôle";
+    }
+    header('Location: admin_dashboard.php');
+    exit();
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -25,7 +66,7 @@ session_start();
       Datta Able
      </span>
     </div>
-    <nav class="mt-10">
+    <nav class="mt-5">
      <a class="flex items-center p-3 bg-blue-800 rounded-lg" href="<?php echo BASE_URL; ?>/views/dashboard/admin.php">
       <i class="fas fa-tachometer-alt">
       </i>
@@ -100,15 +141,15 @@ session_start();
       Dashboard
      </h1>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+    <div class="grid grid-cols-1 md:grid-cols-5 gap-6 mb-6">
      <div class="bg-white p-4 rounded-lg shadow">
       <div class="flex items-center justify-between">
        <div>
         <p class="text-gray-600">
-         Utilisateurs
+         Total des utilisateurs
         </p>
         <p class="text-2xl font-semibold text-green-500">
-         4
+         <?php echo $userCount; ?>
         </p>
        </div>
        <i class="fas fa-user text-green-500"></i>
@@ -122,11 +163,23 @@ session_start();
      <div class="bg-white p-4 rounded-lg shadow">
       <div class="flex items-center justify-between">
        <div>
+        <p class="text-gray-600">Total des livres</p>
+        <p class="text-2xl font-semibold text-green-500"><?php echo $totalBooksCount; ?></p>
+       </div>
+       <i class="fas fa-books text-green-500"></i>
+      </div>
+      <div class="mt-4">
+       <div class="h-2 bg-green-500 rounded-full" style="width: 100%;"></div>
+      </div>
+     </div>
+     <div class="bg-white p-4 rounded-lg shadow">
+      <div class="flex items-center justify-between">
+       <div>
         <p class="text-gray-600">
          Categories
         </p>
         <p class="text-2xl font-semibold text-green-500">
-         120
+         <?php echo $categoryCount; ?>
         </p>
        </div>
       
@@ -145,7 +198,7 @@ session_start();
          Livres réservé
         </p>
         <p class="text-2xl font-semibold text-green-500">
-         30
+         <?php echo $reservedCount; ?>
         </p>
        </div>
      
@@ -164,7 +217,7 @@ session_start();
          Livres emprientés
         </p>
         <p class="text-2xl font-semibold text-green-500">
-         12
+         <?php echo $borrowedCount; ?>
         </p>
        </div>
        
@@ -176,135 +229,81 @@ session_start();
        </div>
       </div>
      </div>
+  
 
 
     </div>
     <div class="bg-white p-6 rounded-lg shadow mb-6">
-     <h2 class="text-xl font-semibold mb-4">
-      Recent Users
-     </h2>
-     <div class="space-y-4">
-      <div class="flex items-center justify-between">
-       <div class="flex items-center">
-        <img alt="User avatar" class="w-10 h-10 rounded-full" height="40" src="https://storage.googleapis.com/a1aa/image/eNgDP2iQxBwfoEi8AuzfKGN6Ib4gheWm2BL3WqN14K4yNN4PB.jpg" width="40"/>
-        <div class="ml-4">
-         <p class="font-semibold">
-          Isabella Christensen
-         </p>
-         <p class="text-gray-500 text-sm">
-          Lorem Ipsum is simply...
-         </p>
-        </div>
-       </div>
-       <div class="flex items-center space-x-4">
-        <p class="text-gray-500 text-sm">
-         11 MAY 12:56
-        </p>
-        <button class="bg-red-500 text-white px-3 py-1 rounded-lg">
-         Reject
-        </button>
-        <button class="bg-green-500 text-white px-3 py-1 rounded-lg">
-         Approve
-        </button>
-       </div>
-      </div>
-      <div class="flex items-center justify-between">
-       <div class="flex items-center">
-        <img alt="User avatar" class="w-10 h-10 rounded-full" height="40" src="https://storage.googleapis.com/a1aa/image/eNgDP2iQxBwfoEi8AuzfKGN6Ib4gheWm2BL3WqN14K4yNN4PB.jpg" width="40"/>
-        <div class="ml-4">
-         <p class="font-semibold">
-          Mathilde Andersen
-         </p>
-         <p class="text-gray-500 text-sm">
-          Lorem Ipsum is simply...
-         </p>
-        </div>
-       </div>
-       <div class="flex items-center space-x-4">
-        <p class="text-gray-500 text-sm">
-         11 MAY 10:35
-        </p>
-        <button class="bg-red-500 text-white px-3 py-1 rounded-lg">
-         Reject
-        </button>
-        <button class="bg-green-500 text-white px-3 py-1 rounded-lg">
-         Approve
-        </button>
-       </div>
-      </div>
-      <div class="flex items-center justify-between">
-       <div class="flex items-center">
-        <img alt="User avatar" class="w-10 h-10 rounded-full" height="40" src="https://storage.googleapis.com/a1aa/image/eNgDP2iQxBwfoEi8AuzfKGN6Ib4gheWm2BL3WqN14K4yNN4PB.jpg" width="40"/>
-        <div class="ml-4">
-         <p class="font-semibold">
-          Karla Sorensen
-         </p>
-         <p class="text-gray-500 text-sm">
-          Lorem Ipsum is simply...
-         </p>
-        </div>
-       </div>
-       <div class="flex items-center space-x-4">
-        <p class="text-gray-500 text-sm">
-         9 MAY 17:38
-        </p>
-        <button class="bg-red-500 text-white px-3 py-1 rounded-lg">
-         Reject
-        </button>
-        <button class="bg-green-500 text-white px-3 py-1 rounded-lg">
-         Approve
-        </button>
-       </div>
-      </div>
-      <div class="flex items-center justify-between">
-       <div class="flex items-center">
-        <img alt="User avatar" class="w-10 h-10 rounded-full" height="40" src="https://storage.googleapis.com/a1aa/image/eNgDP2iQxBwfoEi8AuzfKGN6Ib4gheWm2BL3WqN14K4yNN4PB.jpg" width="40"/>
-        <div class="ml-4">
-         <p class="font-semibold">
-          Ida Jorgensen
-         </p>
-         <p class="text-gray-500 text-sm">
-          Lorem Ipsum is simply...
-         </p>
-        </div>
-       </div>
-       <div class="flex items-center space-x-4">
-        <p class="text-gray-500 text-sm">
-         19 MAY 12:56
-        </p>
-        <button class="bg-red-500 text-white px-3 py-1 rounded-lg">
-         Reject
-        </button>
-        <button class="bg-green-500 text-white px-3 py-1 rounded-lg">
-         Approve
-        </button>
-       </div>
-      </div>
-      <div class="flex items-center justify-between">
-       <div class="flex items-center">
-        <img alt="User avatar" class="w-10 h-10 rounded-full" height="40" src="https://storage.googleapis.com/a1aa/image/eNgDP2iQxBwfoEi8AuzfKGN6Ib4gheWm2BL3WqN14K4yNN4PB.jpg" width="40"/>
-        <div class="ml-4">
-         <p class="font-semibold">
-          Albert Andersen
-         </p>
-         <p class="text-gray-500 text-sm">
-          Lorem Ipsum is simply...
-         </p>
-        </div>
-       </div>
-       <div class="flex items-center space-x-4">
-        <p class="text-gray-500 text-sm">
-         21 JULY 15:45
-        </p>
-        <button class="bg-red-500 text-white px-3 py-1 rounded-lg">
-         Reject
-        </button>
-        <button class="bg-green-500 text-white px-3 py-1 rounded-lg">
-         Approve
-        </button>
-       </div>
-      </div>
-     </div>
+     <h2 class="text-xl font-semibold mb-4">Utilisateurs</h2>
+     <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+                <tr>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Nom
+                    </th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Email
+                    </th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Role
+                    </th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Date d'inscription
+                    </th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Actions
+                    </th>
+                </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+                <?php foreach ($users as $user): ?>
+                    <tr>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm font-medium text-gray-900">
+                                <?php echo htmlspecialchars($user['name']); ?>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm text-gray-500">
+                                <?php echo htmlspecialchars($user['email']); ?>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                                <?php echo $user['role'] === 'admin' ? 'bg-purple-100 text-purple-800' : 'bg-blue-100 text-blue-800'; ?>">
+                                <?php echo ucfirst(htmlspecialchars($user['role'])); ?>
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <?php echo date('d/m/Y H:i', strtotime($user['created_at'])); ?>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <form method="POST" action="" class="inline">
+                                <input type="hidden" name="userId" value="<?php echo $user['id']; ?>">
+                                <select name="newRole" onchange="this.form.submit()" 
+                                        class="text-sm rounded-md border-gray-300 px-3 py-2 
+                                        bg-white border shadow-sm focus:outline-none focus:border-blue-500 
+                                        focus:ring-1 focus:ring-blue-500 transition-all duration-200
+                                        <?php echo $user['role'] === 'admin' ? 'bg-gray-100' : 'hover:border-blue-400'; ?>"
+                                        <?php echo $user['role'] === 'admin' ? 'disabled' : ''; ?>>
+                                    <option value="visitor" <?php echo $user['role'] === 'visitor' ? 'selected' : ''; ?>>
+                                        Visitor
+                                    </option>
+                                    <option value="authenticated" <?php echo $user['role'] === 'authenticated' ? 'selected' : ''; ?>>
+                                        Authenticated
+                                    </option>
+                                    <option value="admin" <?php echo $user['role'] === 'admin' ? 'selected' : ''; ?>>
+                                        Admin
+                                    </option>
+                                </select>
+                            </form>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
     </div>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
      <div class="bg-white p-6 rounded-lg shadow">
@@ -366,5 +365,95 @@ session_start();
     </div>
    </div>
   </div>
+  <!-- Notification -->
+  <div id="notification" class="fixed top-4 right-4 px-4 py-2 rounded-lg shadow-lg transform transition-all duration-300 opacity-0 translate-y-[-100%]">
+  </div>
+
+  <script>
+  function showNotification(message, type = 'success') {
+      const notification = document.getElementById('notification');
+      notification.textContent = message;
+      
+      // Style selon le type de notification
+      if (type === 'success') {
+          notification.className = 'fixed top-4 right-4 px-4 py-2 rounded-lg shadow-lg transform transition-all duration-300 bg-green-500 text-white';
+      } else {
+          notification.className = 'fixed top-4 right-4 px-4 py-2 rounded-lg shadow-lg transform transition-all duration-300 bg-red-500 text-white';
+      }
+      
+      // Afficher la notification
+      notification.style.opacity = '1';
+      notification.style.transform = 'translateY(0)';
+      
+      // Cacher la notification après 3 secondes
+      setTimeout(() => {
+          notification.style.opacity = '0';
+          notification.style.transform = 'translateY(-100%)';
+      }, 3000);
+  }
+
+  document.querySelectorAll('.role-select').forEach(select => {
+      // Sauvegarder la valeur originale
+      select.setAttribute('data-original-value', select.value);
+      
+      select.addEventListener('change', function() {
+          const userId = this.dataset.userId;
+          const newRole = this.value;
+          const originalValue = this.getAttribute('data-original-value');
+          
+          // Ajouter un effet de loading
+          this.classList.add('opacity-50', 'cursor-wait');
+          this.disabled = true;
+          
+          fetch('change_role.php', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/x-www-form-urlencoded',
+              },
+              body: `userId=${userId}&newRole=${newRole}`
+          })
+          .then(response => response.json())
+          .then(data => {
+              if (data.success) {
+                  showNotification('Rôle mis à jour avec succès', 'success');
+                  this.setAttribute('data-original-value', newRole);
+              } else {
+                  showNotification('Erreur lors de la mise à jour du rôle', 'error');
+                  this.value = originalValue;
+              }
+          })
+          .catch(error => {
+              console.error('Error:', error);
+              showNotification('Erreur lors de la mise à jour du rôle', 'error');
+              this.value = originalValue;
+          })
+          .finally(() => {
+              // Enlever l'effet de loading
+              this.classList.remove('opacity-50', 'cursor-wait');
+              this.disabled = false;
+          });
+      });
+  });
+  </script>
+
+  <?php
+  // Ajouter au début de la page, après la balise body, pour afficher les messages
+  if (isset($_SESSION['success_message'])): ?>
+      <div class="fixed top-4 right-4 px-4 py-2 bg-green-500 text-white rounded-lg shadow-lg">
+          <?php 
+          echo $_SESSION['success_message'];
+          unset($_SESSION['success_message']);
+          ?>
+      </div>
+  <?php endif; ?>
+
+  <?php if (isset($_SESSION['error_message'])): ?>
+      <div class="fixed top-4 right-4 px-4 py-2 bg-red-500 text-white rounded-lg shadow-lg">
+          <?php 
+          echo $_SESSION['error_message'];
+          unset($_SESSION['error_message']);
+          ?>
+      </div>
+  <?php endif; ?>
  </body>
 </html>

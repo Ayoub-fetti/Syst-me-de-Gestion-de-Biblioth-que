@@ -84,9 +84,9 @@ public function updateProfile($id, $name, $email) {
 
 // Récupérer tous les utilisateurs
 public function getAllUsers() {
-    $stmt = $this->pdo->prepare("SELECT id, name, email, role FROM users");
+    $stmt = $this->pdo->prepare("SELECT id, name, email, role, created_at FROM users ORDER BY created_at DESC");
     $stmt->execute();
-    return $stmt->fetchAll();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
 // Changer le rôle d'un utilisateur
