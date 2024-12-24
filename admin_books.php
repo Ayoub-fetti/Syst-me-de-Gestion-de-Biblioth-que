@@ -3,6 +3,9 @@ include 'Book.php';
 
 $book = new Book("", "", 0, "", "", "");
 $message = '';
+if (isset($_GET['message'])) {
+    $message = $_GET['message'];
+}
 
 
 // Get all books
@@ -31,7 +34,10 @@ if (isset($_POST['delete']) && isset($_POST['book_id'])) {
         <h2>Gestion des Livres</h2>
         
         <?php if ($message): ?>
-            <div class="alert alert-success"><?php echo $message; ?></div>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <?php echo htmlspecialchars($message); ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
         <?php endif; ?>
 
         <a href="add_book.php" class="btn btn-primary mb-3">Ajouter un livre</a>

@@ -40,7 +40,7 @@ if (isset($_POST['submit'])) {
         $_POST['title'],
         $_POST['author'],
         $_POST['category_id'],
-        $bookData['cover_image'], // Garder l'ancienne image par défaut
+        $bookData['cover_image'],
         $_POST['summary'],
         $_POST['status']
     );
@@ -53,7 +53,6 @@ if (isset($_POST['submit'])) {
         $ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
         
         if (in_array($ext, $allowed)) {
-            // Supprimer l'ancienne image si elle existe
             if (!empty($bookData['cover_image']) && file_exists($bookData['cover_image'])) {
                 unlink($bookData['cover_image']);
             }
@@ -66,9 +65,12 @@ if (isset($_POST['submit'])) {
 
     // Sauvegarder les modifications
     if ($book->updateBook()) {
-        $message = "Livre modifié avec succès";
-        // Recharger les données du livre après la mise à jour
-        $bookData = $book->getBookById($_GET['id']);
+        $message = "Le livre a été modifié avec succès!";
+        // Rediriger vers la page admin avec le message
+        header('Location: admin_books.php?message=' . urlencode($message));
+        exit();
+    } else {
+        $message = "Erreur lors de la modification du livre.";
     }
 }
 ?>

@@ -82,18 +82,25 @@ class Book
         $conn = $database->connect();
 
         if ($conn) {
-            // Préparation de la requête de mise à jour
-            $stmt = $conn->prepare("UPDATE books SET title=?, author=?, category_id=?, cover_image=?, summary=?, status=? WHERE id=?");
-            // Liaison des paramètres avec bindValue()
-            $stmt->bindValue(1, $this->title, PDO::PARAM_STR);
-            $stmt->bindValue(2, $this->author, PDO::PARAM_STR);
-            $stmt->bindValue(3, $this->category_id, PDO::PARAM_INT);
-            $stmt->bindValue(4, $this->cover_image, PDO::PARAM_STR);
-            $stmt->bindValue(5, $this->summary, PDO::PARAM_STR);
-            $stmt->bindValue(6, $this->status, PDO::PARAM_STR);
-            $stmt->bindValue(7, $this->id, PDO::PARAM_INT);
-            $stmt->execute();
+            try {
+                // Préparation de la requête de mise à jour
+                $stmt = $conn->prepare("UPDATE books SET title=?, author=?, category_id=?, cover_image=?, summary=?, status=? WHERE id=?");
+                // Liaison des paramètres avec bindValue()
+                $stmt->bindValue(1, $this->title, PDO::PARAM_STR);
+                $stmt->bindValue(2, $this->author, PDO::PARAM_STR);
+                $stmt->bindValue(3, $this->category_id, PDO::PARAM_INT);
+                $stmt->bindValue(4, $this->cover_image, PDO::PARAM_STR);
+                $stmt->bindValue(5, $this->summary, PDO::PARAM_STR);
+                $stmt->bindValue(6, $this->status, PDO::PARAM_STR);
+                $stmt->bindValue(7, $this->id, PDO::PARAM_INT);
+                
+                return $stmt->execute();
+            } catch (PDOException $e) {
+                echo "Erreur lors de la mise à jour: " . $e->getMessage();
+                return false;
+            }
         }
+        return false;
     }
 
     // Fonction pour supprimer un livre
