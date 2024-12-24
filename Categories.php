@@ -1,6 +1,4 @@
 <?php
-
-
 include 'connection.php';
 
 
@@ -8,8 +6,9 @@ class Categories {
     private $id;
     private $name;
 
-public function __construct($name){
+public function __construct($name,$id){
     $this->name=$name;
+    $this->id=$id;
 }
 
 public function getNameCategory(){
@@ -42,13 +41,15 @@ public function getCategoryById(){
 
     if ($conn) {
         $stmt = $conn->prepare("SELECT * FROM categories WHERE id=?");
-        $stmt->bindValue(1, $id, PDO::PARAM_INT); // Liaison avec bindValue() et spécification du type
+        $stmt->bindValue(1, $this->id, PDO::PARAM_INT); // Liaison avec bindValue() et spécification du type
         $stmt->execute();
         $result = $stmt->fetch(PDO::FETCH_ASSOC); 
         return $result;
     }
       }
 
+
+      
 
 public function updateCategory(){
     $database = new Database;
@@ -84,6 +85,27 @@ public function deleteCategory()
     return true;
 }
 
+
+public function saveCategory()
+{
+    $database = new Database;
+    $conn = $database->connect();
+
+    if ($conn) {
+        try {
+            $stmt = $conn->prepare("INSERT INTO category (name) VALUES (?)");
+            $stmt->bindValue(1, $this->name, PDO::PARAM_STR);
+
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            echo "Erreur: " . $e->getMessage();
+            return false;
+        }
+    }
+    return false;
+}
+
 }
 
 ?>
+
