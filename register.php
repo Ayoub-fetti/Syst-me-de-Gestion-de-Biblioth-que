@@ -1,5 +1,6 @@
 <?php
 require_once 'config.php';
+
 session_start();
 
 $errors = [];
@@ -49,7 +50,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stmt = $pdo->prepare("INSERT INTO users (name, email, password) VALUES (?, ?, ?)");
             $stmt->execute([$username, $email, $hashedPassword]);
             $_SESSION['message'] = "Inscription réussie!";
-            header("Location: index.php");
+            header("Location: login.php");
             exit();
         } catch(PDOException $e) {
             $errors['db'] = "Erreur lors de l'inscription: " . $e->getMessage();
@@ -67,7 +68,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <title>Sign In Page</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
 </head>
 <body class="flex items-center justify-center min-h-screen bg-gray-100">
     <div class="w-full max-w-sm p-6 bg-white rounded-lg shadow-md">
@@ -80,7 +80,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <?php endif; ?>
         <h2 class="mb-2 text-2xl font-bold text-gray-800">Hello !</h2>
         <p class="mb-6 text-gray-600">Welcome </p>
-        <form id="form2" method="POST" action="<?php echo BASE_URL; ?>/signup.php">
+        <form id="form2" method="POST" action="register.php">
             <div class="mb-4">
                 <label class="sr-only" for="username">Username</label>
                 <div class="relative">
@@ -124,7 +124,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <button type="submit" class="w-full py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-500">Sign Up</button>
         </form>
         <div class="mt-4 text-center">
-            <a href="<?php echo BASE_URL; ?>/index.php" class="text-sm text-gray-600 hover:underline">You have an account ?</a>
+            <a href="login.php" class="text-sm text-gray-600 hover:underline">You have an account ?</a>
         </div>
     </div>
 </body>

@@ -3,5 +3,7 @@
 $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https://' : 'http://';
 
 // Construction de la base_url
-define('BASE_URL', $protocol . $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF']));
+$projectPath = dirname($_SERVER['PHP_SELF']);
+$basePath = dirname($projectPath);
+define('BASE_URL', $protocol . $_SERVER['HTTP_HOST'] . $basePath);
 ?> 

@@ -1,3 +1,8 @@
+<?php
+require_once __DIR__ . 'config/config.php';
+session_start();
+?>
+<!DOCTYPE html>
 <html lang="en">
  <head>
   <meta charset="utf-8"/>
@@ -8,19 +13,20 @@
   <script src="https://cdn.tailwindcss.com">
   </script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+  <link href="<?php echo BASE_URL; ?>/public/css/style.css" rel="stylesheet">
  </head>
  <body class="bg-gray-100 font-sans antialiased">
   <div class="flex">
    <!-- Sidebar -->
    <div class="w-64 bg-blue-900 text-white min-h-screen">
     <div class="p-4 flex items-center">
-     <img alt="Logo" class="w-10 h-10 rounded-full" height="40" src="https://storage.googleapis.com/a1aa/image/Ffqv1a8FxG0KKaKqylMElUCyKb3CDgpYnF76SuXbOcitpBfTA.jpg" width="40"/>
+     <img alt="Logo" class="w-10 h-10 rounded-full" src="<?php echo BASE_URL; ?>/public/images/logo.jpg"/>
      <span class="ml-3 text-xl font-semibold">
       Datta Able
      </span>
     </div>
     <nav class="mt-10">
-     <a class="flex items-center p-3 bg-blue-800 rounded-lg" href="#">
+     <a class="flex items-center p-3 bg-blue-800 rounded-lg" href="<?php echo BASE_URL; ?>/views/dashboard/admin.php">
       <i class="fas fa-tachometer-alt">
       </i>
       <span class="ml-3">
@@ -31,7 +37,7 @@
       <p class="text-gray-400 uppercase text-xs px-3">
        UI Element
       </p>
-      <a class="flex items-center p-3 hover:bg-blue-800 rounded-lg" href="#">
+      <a class="flex items-center p-3 hover:bg-blue-800 rounded-lg" href="<?php echo BASE_URL; ?>/views/components/index.php">
        <i class="fas fa-cube">
        </i>
        <span class="ml-3">
@@ -43,14 +49,14 @@
       <p class="text-gray-400 uppercase text-xs px-3">
        Forms &amp; Table
       </p>
-      <a class="flex items-center p-3 hover:bg-blue-800 rounded-lg" href="#">
+      <a class="flex items-center p-3 hover:bg-blue-800 rounded-lg" href="<?php echo BASE_URL; ?>/views/forms/index.php">
        <i class="fas fa-edit">
        </i>
        <span class="ml-3">
         Form elements
        </span>
       </a>
-      <a class="flex items-center p-3 hover:bg-blue-800 rounded-lg" href="#">
+      <a class="flex items-center p-3 hover:bg-blue-800 rounded-lg" href="<?php echo BASE_URL; ?>/views/tables/index.php">
        <i class="fas fa-table">
        </i>
        <span class="ml-3">
@@ -62,14 +68,14 @@
       <p class="text-gray-400 uppercase text-xs px-3">
        Chart &amp; Maps
       </p>
-      <a class="flex items-center p-3 hover:bg-blue-800 rounded-lg" href="#">
+      <a class="flex items-center p-3 hover:bg-blue-800 rounded-lg" href="<?php echo BASE_URL; ?>/views/charts/index.php">
        <i class="fas fa-chart-bar">
        </i>
        <span class="ml-3">
         Chart
        </span>
       </a>
-      <a class="flex items-center p-3 hover:bg-blue-800 rounded-lg" href="#">
+      <a class="flex items-center p-3 hover:bg-blue-800 rounded-lg" href="<?php echo BASE_URL; ?>/views/maps/index.php">
        <i class="fas fa-map">
        </i>
        <span class="ml-3">
@@ -81,25 +87,18 @@
       <p class="text-gray-400 uppercase text-xs px-3">
        Pages
       </p>
-      <a class="flex items-center p-3 hover:bg-blue-800 rounded-lg" href="#">
+      <a class="flex items-center p-3 hover:bg-blue-800 rounded-lg" href="<?php echo BASE_URL; ?>/views/auth/login.php">
        <i class="fas fa-user">
        </i>
        <span class="ml-3">
         Authentication
        </span>
       </a>
-      <a class="flex items-center p-3 hover:bg-blue-800 rounded-lg" href="#">
+      <a class="flex items-center p-3 hover:bg-blue-800 rounded-lg" href="<?php echo BASE_URL; ?>/views/sample/index.php">
        <i class="fas fa-file">
        </i>
        <span class="ml-3">
         Sample page
-       </span>
-      </a>
-      <a class="flex items-center p-3 hover:bg-blue-800 rounded-lg" href="#">
-       <i class="fas fa-ban">
-       </i>
-       <span class="ml-3">
-        Disabled menu
        </span>
       </a>
      </div>
