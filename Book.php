@@ -125,6 +125,16 @@ class Book
     {
         return $this->id;
     }
+
+    // Getter pour cover_image
+    public function getCoverImage() {
+        return $this->cover_image;
+    }
+
+    // Setter pour cover_image
+    public function setCoverImage($cover_image) {
+        $this->cover_image = $cover_image;
+    }
 }
 
 ?>
