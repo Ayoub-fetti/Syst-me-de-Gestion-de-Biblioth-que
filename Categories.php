@@ -20,6 +20,10 @@ public function setCategoryName($name){
     $this->name = $name;
 }
 
+public function setCategoryId($id){
+   $this->id=$id;
+}
+
 
 public function getAllCategories()
 {
