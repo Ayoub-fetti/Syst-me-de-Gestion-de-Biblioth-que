@@ -30,17 +30,21 @@ class Book
         $conn = $database->connect();
 
         if ($conn) {
-            // Préparation de la requête d'insertion
-            $stmt = $conn->prepare("INSERT INTO books (title, author, category_id, cover_image, summary, status) VALUES (?, ?, ?, ?, ?, ?)");
-            // Utilisation de bindValue() pour PDO
-            $stmt->bindValue(1, $this->title, PDO::PARAM_STR);
-            $stmt->bindValue(2, $this->author, PDO::PARAM_STR);
-            $stmt->bindValue(3, $this->category_id, PDO::PARAM_INT);
-            $stmt->bindValue(4, $this->cover_image, PDO::PARAM_STR);
-            $stmt->bindValue(5, $this->summary, PDO::PARAM_STR);
-            $stmt->bindValue(6, $this->status, PDO::PARAM_STR);
-            $stmt->execute();
+            try {
+                $stmt = $conn->prepare("INSERT INTO books (title, author, category_id, cover_image, summary, status) VALUES (?, ?, ?, ?, ?, ?)");
+                $stmt->bindValue(1, $this->title, PDO::PARAM_STR);
+                $stmt->bindValue(2, $this->author, PDO::PARAM_STR);
+                $stmt->bindValue(3, $this->category_id, PDO::PARAM_INT);
+                $stmt->bindValue(4, $this->cover_image, PDO::PARAM_STR);
+                $stmt->bindValue(5, $this->summary, PDO::PARAM_STR);
+                $stmt->bindValue(6, $this->status, PDO::PARAM_STR);
+                return $stmt->execute();
+            } catch (PDOException $e) {
+                echo "Erreur: " . $e->getMessage();
+                return false;
+            }
         }
+        return false;
     }
 
     // Fonction pour récupérer tous les livres
