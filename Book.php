@@ -31,13 +31,14 @@ class Book
 
         if ($conn) {
             // Préparation de la requête d'insertion
-            $stmt = $conn->prepare("INSERT INTO books (title, author, cover_image, summary, status) VALUES (?, ?, ?, ?, ?)");
+            $stmt = $conn->prepare("INSERT INTO books (title, author, category_id, cover_image, summary, status) VALUES (?, ?, ?, ?, ?, ?)");
             // Utilisation de bindValue() pour PDO
             $stmt->bindValue(1, $this->title, PDO::PARAM_STR);
             $stmt->bindValue(2, $this->author, PDO::PARAM_STR);
-            $stmt->bindValue(3, $this->cover_image, PDO::PARAM_STR);
-            $stmt->bindValue(4, $this->summary, PDO::PARAM_STR);
-            $stmt->bindValue(5, $this->status, PDO::PARAM_STR);
+            $stmt->bindValue(3, $this->category_id, PDO::PARAM_INT);
+            $stmt->bindValue(4, $this->cover_image, PDO::PARAM_STR);
+            $stmt->bindValue(5, $this->summary, PDO::PARAM_STR);
+            $stmt->bindValue(6, $this->status, PDO::PARAM_STR);
             $stmt->execute();
         }
     }
@@ -78,14 +79,15 @@ class Book
 
         if ($conn) {
             // Préparation de la requête de mise à jour
-            $stmt = $conn->prepare("UPDATE books SET title=?, author=?, cover_image=?, summary=?, status=? WHERE id=?");
+            $stmt = $conn->prepare("UPDATE books SET title=?, author=?, category_id=?, cover_image=?, summary=?, status=? WHERE id=?");
             // Liaison des paramètres avec bindValue()
             $stmt->bindValue(1, $this->title, PDO::PARAM_STR);
             $stmt->bindValue(2, $this->author, PDO::PARAM_STR);
-            $stmt->bindValue(3, $this->cover_image, PDO::PARAM_STR);
-            $stmt->bindValue(4, $this->summary, PDO::PARAM_STR);
-            $stmt->bindValue(5, $this->status, PDO::PARAM_STR);
-            $stmt->bindValue(6, $this->id, PDO::PARAM_INT);
+            $stmt->bindValue(3, $this->category_id, PDO::PARAM_INT);
+            $stmt->bindValue(4, $this->cover_image, PDO::PARAM_STR);
+            $stmt->bindValue(5, $this->summary, PDO::PARAM_STR);
+            $stmt->bindValue(6, $this->status, PDO::PARAM_STR);
+            $stmt->bindValue(7, $this->id, PDO::PARAM_INT);
             $stmt->execute();
         }
     }

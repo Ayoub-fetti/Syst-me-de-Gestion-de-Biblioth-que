@@ -12,7 +12,20 @@ $allbooks=$newbook->getAllBooks();
 
 echo 'liste des livres <br>';
 
-print_r($allbooks);
+if ($newbook->save()) {
+    echo "Book saved successfully";
+} else {
+    echo "Error saving book";
+}
+
+// When displaying books
+if ($allbooks) {
+    echo "<pre>";
+    print_r($allbooks);
+    echo "</pre>";
+} else {
+    echo "No books found or error occurred";
+}
 
 
 ?>
