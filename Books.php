@@ -21,8 +21,6 @@ $allBooks=$book->getAllBooks();
 //$titles= $book->getTitle();   j fais des gettes pour chaque attribut est c'est pas pratique, refaire avec $allbooks to get data for each card
 //$summaries=$book->getSummaries();
 
-
-
 ?>
 
 
@@ -36,7 +34,7 @@ $allBooks=$book->getAllBooks();
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
         <?php foreach ($allBooks as $book): ?>
             <div class="text-center bg-gray-100 p-4 rounded-lg shadow-md">
-                <img alt="The Book of CSS3" class="w-full h-auto rounded-lg" height="300" src="https://storage.googleapis.com/a1aa/image/xc2h0Gtvge0nQCxHem79mwBhMTtfmYEAkxfoccyUliJEnO6PB.jpg" width="200" />
+                <img alt="The Book of CSS3" class="w-full h-auto rounded-lg" height="300" src=" <?php var_dump($book['cover_image']);   ?>    " width="200" />
                 
                 <p name="title" class="mt-4 text-lg font-semibold">
                     <?php echo $book['title']; ?>
@@ -69,6 +67,9 @@ $allBooks=$book->getAllBooks();
                  // declarer cette variable pour trier la chaine de caracter remove ; w les caractere speciaux
                  $statusValue = trim($book['status']);
                  
+
+                 // faire les tests pour afficher la button convient
+
                  if ($statusValue=='available'){
                  echo 'Emprunter maintenant!';
                                                }
