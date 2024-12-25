@@ -1,10 +1,9 @@
 <?php
 // db.php : Connexion à la base de données
-require_once 'constants.php';
 
 class Database {
     private $host = 'localhost';   
-    private $dbname = 'bibliotheque';   // Nom de la base de données
+    private $dbname = 'Bibliotheque';   // Nom de la base de données
     private $username = 'root';    // Nom d'utilisateur pour la base de données
     private $password = '';        // Mot de passe pour la base de données
     private $conn;
