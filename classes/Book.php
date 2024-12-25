@@ -144,7 +144,7 @@ class Book
         $this->cover_image = $cover_image;
     }
 
-
+/*
     public function getTitle(){
         $db = new Database();
         $conn = $db->connect();
@@ -159,6 +159,25 @@ class Book
             }
 
                                 }
+
+
+    public function getSummaries(){
+        $db=new Database();
+        $conn=$db->connect();
+        if($conn){
+            
+            $stmt = $conn->prepare("SELECT summary FROM books");
+            $stmt->execute();
+            $result = $stmt->fetchAll();
+            return $result;
+           
+               }
+        
+    }
+*/    // duplicated, not useful i worked with $Allbooks array to get titles and summaries for each book
+
+
+
 }
 
 ?>

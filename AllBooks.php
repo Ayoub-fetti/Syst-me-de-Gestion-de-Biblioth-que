@@ -9,7 +9,6 @@
 </head>
 <body>
   
-
 <?php
 
 include 'classes/Book.php';
@@ -20,11 +19,6 @@ $book = new Book("", "", 0, "", "", "");
 $allBooks=$book->getAllBooks();
 $titles= $book->getTitle();
 print_r($titles);
-
-
-
-
-
 
 ?>
 
