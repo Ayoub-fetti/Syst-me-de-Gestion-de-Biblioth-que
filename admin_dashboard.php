@@ -63,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['userId']) && isset($_
     <div class="p-4 flex items-center">
      <img alt="Logo" class="w-10 h-10 rounded-full" src="<?php echo BASE_URL; ?>/public/images/logo.jpg"/>
      <span class="ml-3 text-xl font-semibold">
-      Datta Able
+      Admin Dashbord
      </span>
     </div>
     <nav class="mt-5">
