@@ -257,47 +257,58 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['userId']) && isset($_
                 </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
-                <?php foreach ($users as $user): ?>
+                <?php foreach ($users as $userItem): ?>
                     <tr>
                         <td class="px-6 py-4 whitespace-nowrap">
                             <div class="text-sm font-medium text-gray-900">
-                                <?php echo htmlspecialchars($user['name']); ?>
+                                <?php echo htmlspecialchars($userItem['name']); ?>
                             </div>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
                             <div class="text-sm text-gray-500">
-                                <?php echo htmlspecialchars($user['email']); ?>
+                                <?php echo htmlspecialchars($userItem['email']); ?>
                             </div>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
                             <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                                <?php echo $user['role'] === 'admin' ? 'bg-purple-100 text-purple-800' : 'bg-blue-100 text-blue-800'; ?>">
-                                <?php echo ucfirst(htmlspecialchars($user['role'])); ?>
+                                <?php echo $userItem['role'] === 'admin' ? 'bg-purple-100 text-purple-800' : 'bg-blue-100 text-blue-800'; ?>">
+                                <?php echo ucfirst(htmlspecialchars($userItem['role'])); ?>
                             </span>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            <?php echo date('d/m/Y H:i', strtotime($user['created_at'])); ?>
+                            <?php echo date('d/m/Y H:i', strtotime($userItem['created_at'])); ?>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
-                            <form method="POST" action="" class="inline">
-                                <input type="hidden" name="userId" value="<?php echo $user['id']; ?>">
-                                <select name="newRole" onchange="this.form.submit()" 
-                                        class="text-sm rounded-md border-gray-300 px-3 py-2 
-                                        bg-white border shadow-sm focus:outline-none focus:border-blue-500 
-                                        focus:ring-1 focus:ring-blue-500 transition-all duration-200
-                                        <?php echo $user['role'] === 'admin' ? 'bg-gray-100' : 'hover:border-blue-400'; ?>"
-                                        <?php echo $user['role'] === 'admin' ? 'disabled' : ''; ?>>
-                                    <option value="visitor" <?php echo $user['role'] === 'visitor' ? 'selected' : ''; ?>>
-                                        Visitor
-                                    </option>
-                                    <option value="authenticated" <?php echo $user['role'] === 'authenticated' ? 'selected' : ''; ?>>
-                                        Authenticated
-                                    </option>
-                                    <option value="admin" <?php echo $user['role'] === 'admin' ? 'selected' : ''; ?>>
-                                        Admin
-                                    </option>
-                                </select>
-                            </form>
+                            <div class="flex flex-col space-y-2">
+                                <div class="flex space-x-2">
+                                    <form method="GET" action="edit_user.php" style="display: inline;">
+                                        <input type="hidden" name="id" value="<?php echo $userItem['id']; ?>">
+                                        <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded">
+                                            Modifier
+                                        </button>
+                                    </form>
+
+                                    <?php if ($userItem['role'] !== 'admin'): ?>
+                                        <form method="POST" action="delete_user.php" style="display: inline;">
+                                            <input type="hidden" name="id" value="<?php echo $userItem['id']; ?>">
+                                            <button type="submit" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded" 
+                                                    onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?');">
+                                                Supprimer
+                                            </button>
+                                        </form>
+                                    <?php endif; ?>
+                                </div>
+                                
+                                <?php if ($userItem['id'] !== $_SESSION['user_id']): ?>
+                                    <form method="POST" style="display: inline;" onsubmit="return confirm('Êtes-vous sûr de vouloir changer le rôle de cet utilisateur ?');">
+                                        <input type="hidden" name="userId" value="<?php echo $userItem['id']; ?>">
+                                        <select name="newRole" onchange="this.form.submit()" class="w-22 bg-gray-100 border border-gray-300 rounded px-1 py-1">
+                                            <option value="authenticated" <?php echo $userItem['role'] === 'authenticated' ? 'selected' : ''; ?>>Authenticated</option>
+                                            <option value="admin" <?php echo $userItem['role'] === 'admin' ? 'selected' : ''; ?>>Admin</option>
+                                        </select>
+                                    </form>
+                                <?php endif; ?>
+                            </div>
                         </td>
                     </tr>
                 <?php endforeach; ?>
@@ -368,73 +379,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['userId']) && isset($_
   <!-- Notification -->
   <div id="notification" class="fixed top-4 right-4 px-4 py-2 rounded-lg shadow-lg transform transition-all duration-300 opacity-0 translate-y-[-100%]">
   </div>
-
-  <script>
-  function showNotification(message, type = 'success') {
-      const notification = document.getElementById('notification');
-      notification.textContent = message;
-      
-      // Style selon le type de notification
-      if (type === 'success') {
-          notification.className = 'fixed top-4 right-4 px-4 py-2 rounded-lg shadow-lg transform transition-all duration-300 bg-green-500 text-white';
-      } else {
-          notification.className = 'fixed top-4 right-4 px-4 py-2 rounded-lg shadow-lg transform transition-all duration-300 bg-red-500 text-white';
-      }
-      
-      // Afficher la notification
-      notification.style.opacity = '1';
-      notification.style.transform = 'translateY(0)';
-      
-      // Cacher la notification après 3 secondes
-      setTimeout(() => {
-          notification.style.opacity = '0';
-          notification.style.transform = 'translateY(-100%)';
-      }, 3000);
-  }
-
-  document.querySelectorAll('.role-select').forEach(select => {
-      // Sauvegarder la valeur originale
-      select.setAttribute('data-original-value', select.value);
-      
-      select.addEventListener('change', function() {
-          const userId = this.dataset.userId;
-          const newRole = this.value;
-          const originalValue = this.getAttribute('data-original-value');
-          
-          // Ajouter un effet de loading
-          this.classList.add('opacity-50', 'cursor-wait');
-          this.disabled = true;
-          
-          fetch('change_role.php', {
-              method: 'POST',
-              headers: {
-                  'Content-Type': 'application/x-www-form-urlencoded',
-              },
-              body: `userId=${userId}&newRole=${newRole}`
-          })
-          .then(response => response.json())
-          .then(data => {
-              if (data.success) {
-                  showNotification('Rôle mis à jour avec succès', 'success');
-                  this.setAttribute('data-original-value', newRole);
-              } else {
-                  showNotification('Erreur lors de la mise à jour du rôle', 'error');
-                  this.value = originalValue;
-              }
-          })
-          .catch(error => {
-              console.error('Error:', error);
-              showNotification('Erreur lors de la mise à jour du rôle', 'error');
-              this.value = originalValue;
-          })
-          .finally(() => {
-              // Enlever l'effet de loading
-              this.classList.remove('opacity-50', 'cursor-wait');
-              this.disabled = false;
-          });
-      });
-  });
-  </script>
 
   <?php
   // Ajouter au début de la page, après la balise body, pour afficher les messages

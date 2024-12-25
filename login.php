@@ -3,7 +3,6 @@ require_once 'connection.php';
 require_once 'classes/User.php';
 session_start();
 
-// Créer l'instance de Database et obtenir la connexion PDO
 $db = new Database();
 $pdo = $db->connect();
 

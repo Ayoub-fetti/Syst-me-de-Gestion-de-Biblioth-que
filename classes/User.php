@@ -44,14 +44,14 @@ class user {
  // Register method
  public function register($name, $email, $password) {
     try {
-        // Vérifier si l'email existe déjà
+        // VErifier si l'email existe dEjA
         $stmt = $this->pdo->prepare("SELECT id FROM users WHERE email = ?");
         $stmt->execute([$email]);
         if ($stmt->rowCount() > 0) {
             return ['success' => false, 'message' => "Cet email est déjà utilisé"];
         }
 
-        // Créer le nouvel utilisateur
+        // Creer le nouvel utilisateur
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
         $stmt = $this->pdo->prepare("INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, 'authenticated')");
         $stmt->execute([$name, $email, $hashedPassword]);
@@ -82,14 +82,14 @@ public function updateProfile($id, $name, $email) {
 }
 }
 
-// Récupérer tous les utilisateurs
+// Recuperer tous les utilisateurs
 public function getAllUsers() {
     $stmt = $this->pdo->prepare("SELECT id, name, email, role, created_at FROM users ORDER BY created_at DESC");
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
-// Changer le rôle d'un utilisateur
+// Changer le role d'un utilisateur
 public function changeUserRole($userId, $newRole) {
     try {
         $stmt = $this->pdo->prepare("UPDATE users SET role = ? WHERE id = ?");
@@ -111,26 +111,6 @@ public function deleteUser($userId) {
     }
 }
 
-// Changer le mot de passe
-public function changePassword($userId, $oldPassword, $newPassword) {
-    try {
-        $stmt = $this->pdo->prepare("SELECT password FROM users WHERE id = ?");
-        $stmt->execute([$userId]);
-        $user = $stmt->fetch();
-
-        if (!$user || !password_verify($oldPassword, $user['password'])) {
-            return ['success' => false, 'message' => "Ancien mot de passe incorrect"];
-        }
-
-        $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
-        $stmt = $this->pdo->prepare("UPDATE users SET password = ? WHERE id = ?");
-        $stmt->execute([$hashedPassword, $userId]);
-        
-        return ['success' => true, 'message' => "Mot de passe modifié avec succès"];
-    } catch(PDOException $e) {
-        return ['success' => false, 'message' => "Erreur lors du changement de mot de passe: " . $e->getMessage()];
-    }
-}
 }
 
 ?>
