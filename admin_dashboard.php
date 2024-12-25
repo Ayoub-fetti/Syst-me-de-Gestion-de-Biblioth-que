@@ -6,7 +6,7 @@ session_start();
 $db = new Database();
 $pdo = $db->connect();
 
-// Création de l'instance User et récupération des utilisateurs
+// Creation de l'instance User et recuperation des utilisateurs
 $user = new User($pdo);
 $users = $user->getAllUsers();
 
@@ -30,7 +30,7 @@ $reservedCount = $reservedQuery->fetch(PDO::FETCH_ASSOC)['total_reserved'];
 $borrowedQuery = $pdo->query("SELECT COUNT(*) as total_borrowed FROM books WHERE status = 'borrowed'");
 $borrowedCount = $borrowedQuery->fetch(PDO::FETCH_ASSOC)['total_borrowed'];
 
-// Traitement du changement de rôle
+// Traitement du changement de role
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['userId']) && isset($_POST['newRole'])) {
     $result = $user->changeUserRole($_POST['userId'], $_POST['newRole']);
     if ($result['success']) {
