@@ -64,7 +64,19 @@ $allBooks=$book->getAllBooks();
 
                 <!-- Bouton pour chaque card -->
                 <button class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
-                    Action
+                 <?php
+                 
+                 // declarer cette variable pour trier la chaine de caracter remove ; w les caractere speciaux
+                 $statusValue = trim($book['status']);
+                 
+                 if ($statusValue=='available'){
+                 echo 'Emprunter maintenant!';
+                                               }
+                else                         {
+                echo 'Réserver';
+                                             } 
+                 ?>
+
                 </button>
             </div>
         <?php endforeach; ?>
