@@ -35,7 +35,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Redirection selon le rôle
             switch($user->getRole()) {
                 case 'admin':
-                    header("Location: admin_dashboard.php");
+                    header("Location: admin/admin_dashboard.php");
                     break;
                 case 'visitor':
                     header("Location: index.php");
