@@ -19,9 +19,8 @@ $book = new Book("", "", 0, "", "", "");
 
 $allBooks=$book->getAllBooks();
 $titles= $book->getTitle();
-foreach ($allBooks as $book) {
-  echo '';
-}
+print_r($titles);
+
 
 
 
@@ -29,14 +28,15 @@ foreach ($allBooks as $book) {
 
 ?>
 
-<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-  <div class="bg-white p-6 rounded-lg shadow-md">
-    <!-- Card Content -->
-     <?php foreach ($allBooks as $book):   ?>
-    <h2 name="title" class="text-xl font-semibold"><?php echo $book['title'];    ?></h2>
+<?php foreach ($titles as $title):   ?>
+<div>
+  <div class="">
+    <h2 name="title" class="text-xl font-semibold"><?php echo $title['title']; ?></h2>
     <p name="summary" class="mt-2"></p>
-    <?php  endforeach     ?>
+
   </div>
+
+  <?php  endforeach     ?>
 </div>
 
 
