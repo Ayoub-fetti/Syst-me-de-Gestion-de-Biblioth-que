@@ -1,8 +1,14 @@
 <?php
-require_once 'config.php';
+require_once 'connection.php';
+require_once 'classes/User.php';
 session_start();
 
+$db = new Database();
+$pdo = $db->connect();
+
 $errors = [];
+$user = new User($pdo);
+
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = trim($_POST['email']);
@@ -16,45 +22,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $errors['password'] = "Le mot de passe est requis";
     }
 
-    // Verification dans la base de données
     if (empty($errors)) {
-        $stmt = $pdo->prepare("SELECT * FROM users WHERE email = ?");
-        $stmt->execute([$email]);
-        $user = $stmt->fetch();
+        // Utilisation de la méthode login de la classe User
+        if ($user->login($email, $password)) {
+            // Stockage des informations de l'utilisateur en session
+            $_SESSION['user_id'] = $user->getId();
+            $_SESSION['user_name'] = $user->getName();
+            $_SESSION['user_role'] = $user->getRole();
 
-        if ($user) {
-            $isValid = false;
-            if ($user['role'] === 'admin' && $password === $user['password']) {
-                // Cas spécial pour l'admin avec mot de passe en texte brut
-                $isValid = true;
-            } else {
-                // Pour les autres utilisateurs, vérification normale avec password_verify
-                $isValid = password_verify($password, $user['password']);
+            // Redirection selon le rôle
+            switch($user->getRole()) {
+                case 'admin':
+                    header("Location: admin_dashboard.php");
+                    break;
+                case 'visitor':
+                    header("Location: index.php");
+                    break;
+                case 'authenticated':
+                    header("Location: user_dashboard.php");
+                    break;
+                default:
+                    header("Location: index.php");
             }
-
-            if ($isValid) {
-                $_SESSION['id'] = $user['id'];
-                $_SESSION['name'] = $user['name'];
-                $_SESSION['role'] = $user['role'];
-
-                // Redirection en fonction du role
-                switch($user['role']) {
-                    case 'admin':
-                        header("Location: admin_dashbord.php");
-                        break;
-                    case 'visitor':
-                        header("Location: #");
-                        break;
-                    case 'authenticated':
-                        header("Location: user_dashbord.php");
-                        break;
-                    default:
-                        header("Location: index.php");
-                }
-                exit();
-            }
+            exit();
+        } else {
+            $errors['login'] = "Email ou mot de passe incorrect";
         }
-        $errors['login'] = "Email ou mot de passe incorrect";
     }
 }
 ?>
@@ -77,6 +70,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <?php foreach($errors as $error): ?>
                     <p><?php echo htmlspecialchars($error); ?></p>
                 <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
+        <?php if (isset($_SESSION['success_message'])): ?>
+            <div class="mb-4 p-3 bg-green-100 text-green-700 rounded">
+                <?php 
+                echo htmlspecialchars($_SESSION['success_message']); 
+                unset($_SESSION['success_message']); // Effacer le message après l'avoir affiché
+                ?>
             </div>
         <?php endif; ?>
         <h2 class="mb-2 text-2xl font-bold text-gray-800">Hello Again!</h2>

@@ -1,18 +1,15 @@
 <?php
-require_once 'config.php';
+require_once 'connection.php';
+require_once 'classes/User.php';
 
 session_start();
 
-$errors = [];
-$success = false;
+// Créer l'instance de Database et obtenir la connexion PDO
+$db = new Database();
+$pdo = $db->connect();
 
-try {
-    $pdo = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASS);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $pdo->query("SELECT 1");
-} catch(PDOException $e) {
-    die("Erreur de connexion: " . $e->getMessage());
-}
+$errors = [];
+$user = new User($pdo);
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = trim($_POST['name']);
@@ -34,27 +31,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $errors['passwordC'] = "Les mots de passe ne correspondent pas";
     }
 
-    // Vérification si l'email existe déjà
     if (empty($errors)) {
-        $stmt = $pdo->prepare("SELECT id FROM users WHERE email = ?");
-        $stmt->execute([$email]);
-        if ($stmt->rowCount() > 0) {
-            $errors['email'] = "Cet email est déjà utilisé";
-        }
-    }
-
-    // Inscription
-    if (empty($errors)) {
-        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-        try {
-            $stmt = $pdo->prepare("INSERT INTO users (name, email, password) VALUES (?, ?, ?)");
-            $stmt->execute([$username, $email, $hashedPassword]);
-            $_SESSION['message'] = "Inscription réussie!";
+        // Utilisation de la méthode register de la classe User
+        $result = $user->register($username, $email, $password);
+        
+        if ($result['success']) {
+            // Enregistrement réussi
+            $_SESSION['success_message'] = $result['message'];
             header("Location: login.php");
             exit();
-        } catch(PDOException $e) {
-            $errors['db'] = "Erreur lors de l'inscription: " . $e->getMessage();
-            error_log($e->getMessage());
+        } else {
+            // Erreur lors de l'enregistrement
+            $errors['register'] = $result['message'];
         }
     }
 }
