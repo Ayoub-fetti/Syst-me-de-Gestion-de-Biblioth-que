@@ -34,8 +34,7 @@ $allBooks=$book->getAllBooks();
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
         <?php foreach ($allBooks as $book): ?>
             <div class="text-center bg-gray-100 p-4 rounded-lg shadow-md">
-                <img alt="The Book of CSS3" class="w-full h-auto rounded-lg" height="300" src=" <?php var_dump($book['cover_image']);   ?>    " width="200" />
-                
+            <img alt="The Book of CSS3" class="w-full h-auto rounded-lg" height="300" src="GB/admins/covers/<?php echo $book['cover_image']; ?>" width="200" />                
                 <p name="title" class="mt-4 text-lg font-semibold">
                     <?php echo $book['title']; ?>
                 </p>
