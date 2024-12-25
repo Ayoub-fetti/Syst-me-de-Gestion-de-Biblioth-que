@@ -143,6 +143,22 @@ class Book
     public function setCoverImage($cover_image) {
         $this->cover_image = $cover_image;
     }
+
+
+    public function getTitle(){
+        $db = new Database();
+        $conn = $db->connect();
+
+        if($conn){
+            
+         $stmt = $conn->prepare("SELECT title FROM books");
+         $stmt->execute();
+         $result = $stmt->fetchAll();
+         return $result;
+        
+            }
+
+                                }
 }
 
 ?>
