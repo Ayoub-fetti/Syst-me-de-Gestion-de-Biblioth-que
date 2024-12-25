@@ -29,25 +29,23 @@ $allBooks=$book->getAllBooks();
     <h1 class="text-3xl font-bold mb-8">
         ALL BOOKS
     </h1>
-    <?php foreach ($allBooks as $book):   ?>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8">
-
-        <div class="text-center">
-            <img alt="The Book of CSS3" class="w-full h-auto" height="300" src="https://storage.googleapis.com/a1aa/image/xc2h0Gtvge0nQCxHem79mwBhMTtfmYEAkxfoccyUliJEnO6PB.jpg" width="200" />
-            <p name="title" class="mt-4 text-lg">
-            <?php echo $book['title']; ?>
-            </p>
-
-            <p name="summary" class="text-gray-600">
-            <?php echo $book['summary']; ?>
- 
-            
-            </p>
-        </div>
+    <!-- Déplace la classe grid à cet élément parent pour définir la grille -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+        <?php foreach ($allBooks as $book): ?>
+            <div class="text-center">
+                <img alt="The Book of CSS3" class="w-full h-auto" height="300" src="https://storage.googleapis.com/a1aa/image/xc2h0Gtvge0nQCxHem79mwBhMTtfmYEAkxfoccyUliJEnO6PB.jpg" width="200" />
+                <p name="title" class="mt-4 text-lg">
+                    <?php echo $book['title']; ?>
+                </p>
+                <p name="summary" class="text-gray-600">
+                    <?php echo $book['summary']; ?>
+                </p>
+            </div>
+        <?php endforeach; ?>
     </div>
-    <?php endforeach ;  ?>
 
 </body>
+
 
 </html>
