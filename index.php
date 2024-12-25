@@ -3,374 +3,133 @@
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
   <title>
-   Dashboard
+   Online Book Library
   </title>
   <script src="https://cdn.tailwindcss.com">
   </script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
  </head>
- <body class="bg-gray-100 font-sans antialiased">
-  <div class="flex">
-   <!-- Sidebar -->
-   <div class="w-64 bg-blue-900 text-white min-h-screen">
-    <div class="p-4 flex items-center">
-     <img alt="Logo" class="w-10 h-10 rounded-full" height="40" src="https://storage.googleapis.com/a1aa/image/Ffqv1a8FxG0KKaKqylMElUCyKb3CDgpYnF76SuXbOcitpBfTA.jpg" width="40"/>
-     <span class="ml-3 text-xl font-semibold">
-      Datta Able
+ <body class="bg-white text-gray-800">
+  <!-- Header -->
+  <header class="bg-black text-white">
+   <div class="container mx-auto flex justify-between items-center py-2 px-4">
+    <div class="text-2xl font-bold">
+     AMAZON
+    </div>
+    <div class="flex items-center space-x-2">
+     <input class="px-2 py-1 text-black" placeholder="Search category" type="text"/>
+     <button class="bg-red-600 px-4 py-1">
+      SEARCH
+     </button>
+    </div>
+
+   </div>
+   <nav class="bg-gray-800">
+    <div class="container mx-auto flex justify-between items-center py-2 px-4 text-sm">
+     <a class="text-white px-2" href="#">
+      HOME
+     </a>
+     <a class="text-white px-2" href="#">
+      BOOKLIBRARY
+     </a>
+     <a class="text-white px-2" href="#">
+      AGENTS
+     </a>
+     <a class="text-white px-2" href="#">
+      VIRTUEMART
+     </a>
+     <a class="text-white px-2" href="#">
+      OS CCK
+     </a>
+     <a class="text-white px-2" href="#">
+      PAGES
+     </a>
+     <a class="text-white px-2" href="#">
+      CONTACT US
+     </a>
+     <span class="text-white px-2">
+      CART EMPTY
      </span>
     </div>
-    <nav class="mt-10">
-     <a class="flex items-center p-3 bg-blue-800 rounded-lg" href="#">
-      <i class="fas fa-tachometer-alt">
-      </i>
-      <span class="ml-3">
-       Dashboard
-      </span>
-     </a>
-     <div class="mt-5">
-      <p class="text-gray-400 uppercase text-xs px-3">
-       UI Element
-      </p>
-      <a class="flex items-center p-3 hover:bg-blue-800 rounded-lg" href="#">
-       <i class="fas fa-cube">
-       </i>
-       <span class="ml-3">
-        Components
-       </span>
-      </a>
-     </div>
-     <div class="mt-5">
-      <p class="text-gray-400 uppercase text-xs px-3">
-       Forms &amp; Table
-      </p>
-      <a class="flex items-center p-3 hover:bg-blue-800 rounded-lg" href="#">
-       <i class="fas fa-edit">
-       </i>
-       <span class="ml-3">
-        Form elements
-       </span>
-      </a>
-      <a class="flex items-center p-3 hover:bg-blue-800 rounded-lg" href="#">
-       <i class="fas fa-table">
-       </i>
-       <span class="ml-3">
-        Table
-       </span>
-      </a>
-     </div>
-     <div class="mt-5">
-      <p class="text-gray-400 uppercase text-xs px-3">
-       Chart &amp; Maps
-      </p>
-      <a class="flex items-center p-3 hover:bg-blue-800 rounded-lg" href="#">
-       <i class="fas fa-chart-bar">
-       </i>
-       <span class="ml-3">
-        Chart
-       </span>
-      </a>
-      <a class="flex items-center p-3 hover:bg-blue-800 rounded-lg" href="#">
-       <i class="fas fa-map">
-       </i>
-       <span class="ml-3">
-        Maps
-       </span>
-      </a>
-     </div>
-     <div class="mt-5">
-      <p class="text-gray-400 uppercase text-xs px-3">
-       Pages
-      </p>
-      <a class="flex items-center p-3 hover:bg-blue-800 rounded-lg" href="#">
-       <i class="fas fa-user">
-       </i>
-       <span class="ml-3">
-        Authentication
-       </span>
-      </a>
-      <a class="flex items-center p-3 hover:bg-blue-800 rounded-lg" href="#">
-       <i class="fas fa-file">
-       </i>
-       <span class="ml-3">
-        Sample page
-       </span>
-      </a>
-      <a class="flex items-center p-3 hover:bg-blue-800 rounded-lg" href="#">
-       <i class="fas fa-ban">
-       </i>
-       <span class="ml-3">
-        Disabled menu
-       </span>
-      </a>
-     </div>
-    </nav>
-   </div>
-   <!-- Main Content -->
-   <div class="flex-1 p-6">
-    <div class="flex justify-between items-center mb-6">
-     <h1 class="text-2xl font-semibold">
-      Dashboard
+   </nav>
+  </header>
+  <!-- Main Content -->
+  <main class="container mx-auto my-4">
+   <!-- Hero Section -->
+   <div class="relative">
+    <img alt="Library interior with bookshelves and statues" class="w-full h-96 object-cover" height="400" src="https://storage.googleapis.com/a1aa/image/t5AouAqr8QYIKF9SyDhhiaQvnniQaC9EpvNIQevD6ffxF38nA.jpg" width="1200"/>
+    <div class="absolute inset-0 flex flex-col justify-center items-center text-white">
+     <h1 class="text-4xl font-bold">
+      ONLINE BOOK LIBRARY
      </h1>
-     <div class="flex items-center space-x-4">
-      <div class="relative">
-       <button class="flex items-center bg-white p-2 rounded-lg shadow">
-        <span class="mr-2">
-         Dropdown
-        </span>
-        <i class="fas fa-chevron-down">
-        </i>
-       </button>
-      </div>
-      <div class="flex items-center space-x-2">
-       <i class="fas fa-bell text-gray-600">
-       </i>
-       <i class="fas fa-cog text-gray-600">
-       </i>
-      </div>
-     </div>
-    </div>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-     <div class="bg-white p-4 rounded-lg shadow">
-      <div class="flex items-center justify-between">
-       <div>
-        <p class="text-gray-600">
-         Daily Sales
-        </p>
-        <p class="text-2xl font-semibold text-green-500">
-         $ 249.95
-        </p>
-       </div>
-       <i class="fas fa-arrow-up text-green-500">
-       </i>
-      </div>
-      <div class="mt-4">
-       <div class="h-2 bg-green-500 rounded-full" style="width: 67%;">
-       </div>
-      </div>
-     </div>
-     <div class="bg-white p-4 rounded-lg shadow">
-      <div class="flex items-center justify-between">
-       <div>
-        <p class="text-gray-600">
-         Monthly Sales
-        </p>
-        <p class="text-2xl font-semibold text-red-500">
-         $ 2,942.32
-        </p>
-       </div>
-       <i class="fas fa-arrow-down text-red-500">
-       </i>
-      </div>
-      <div class="mt-4">
-       <div class="h-2 bg-purple-500 rounded-full" style="width: 36%;">
-       </div>
-      </div>
-     </div>
-     <div class="bg-white p-4 rounded-lg shadow">
-      <div class="flex items-center justify-between">
-       <div>
-        <p class="text-gray-600">
-         Yearly Sales
-        </p>
-        <p class="text-2xl font-semibold text-green-500">
-         $ 8,638.32
-        </p>
-       </div>
-       <i class="fas fa-arrow-up text-green-500">
-       </i>
-      </div>
-      <div class="mt-4">
-       <div class="h-2 bg-green-500 rounded-full" style="width: 80%;">
-       </div>
-      </div>
-     </div>
-    </div>
-    <div class="bg-white p-6 rounded-lg shadow mb-6">
-     <h2 class="text-xl font-semibold mb-4">
-      Recent Users
-     </h2>
-     <div class="space-y-4">
-      <div class="flex items-center justify-between">
-       <div class="flex items-center">
-        <img alt="User avatar" class="w-10 h-10 rounded-full" height="40" src="https://storage.googleapis.com/a1aa/image/eNgDP2iQxBwfoEi8AuzfKGN6Ib4gheWm2BL3WqN14K4yNN4PB.jpg" width="40"/>
-        <div class="ml-4">
-         <p class="font-semibold">
-          Isabella Christensen
-         </p>
-         <p class="text-gray-500 text-sm">
-          Lorem Ipsum is simply...
-         </p>
-        </div>
-       </div>
-       <div class="flex items-center space-x-4">
-        <p class="text-gray-500 text-sm">
-         11 MAY 12:56
-        </p>
-        <button class="bg-red-500 text-white px-3 py-1 rounded-lg">
-         Reject
-        </button>
-        <button class="bg-green-500 text-white px-3 py-1 rounded-lg">
-         Approve
-        </button>
-       </div>
-      </div>
-      <div class="flex items-center justify-between">
-       <div class="flex items-center">
-        <img alt="User avatar" class="w-10 h-10 rounded-full" height="40" src="https://storage.googleapis.com/a1aa/image/eNgDP2iQxBwfoEi8AuzfKGN6Ib4gheWm2BL3WqN14K4yNN4PB.jpg" width="40"/>
-        <div class="ml-4">
-         <p class="font-semibold">
-          Mathilde Andersen
-         </p>
-         <p class="text-gray-500 text-sm">
-          Lorem Ipsum is simply...
-         </p>
-        </div>
-       </div>
-       <div class="flex items-center space-x-4">
-        <p class="text-gray-500 text-sm">
-         11 MAY 10:35
-        </p>
-        <button class="bg-red-500 text-white px-3 py-1 rounded-lg">
-         Reject
-        </button>
-        <button class="bg-green-500 text-white px-3 py-1 rounded-lg">
-         Approve
-        </button>
-       </div>
-      </div>
-      <div class="flex items-center justify-between">
-       <div class="flex items-center">
-        <img alt="User avatar" class="w-10 h-10 rounded-full" height="40" src="https://storage.googleapis.com/a1aa/image/eNgDP2iQxBwfoEi8AuzfKGN6Ib4gheWm2BL3WqN14K4yNN4PB.jpg" width="40"/>
-        <div class="ml-4">
-         <p class="font-semibold">
-          Karla Sorensen
-         </p>
-         <p class="text-gray-500 text-sm">
-          Lorem Ipsum is simply...
-         </p>
-        </div>
-       </div>
-       <div class="flex items-center space-x-4">
-        <p class="text-gray-500 text-sm">
-         9 MAY 17:38
-        </p>
-        <button class="bg-red-500 text-white px-3 py-1 rounded-lg">
-         Reject
-        </button>
-        <button class="bg-green-500 text-white px-3 py-1 rounded-lg">
-         Approve
-        </button>
-       </div>
-      </div>
-      <div class="flex items-center justify-between">
-       <div class="flex items-center">
-        <img alt="User avatar" class="w-10 h-10 rounded-full" height="40" src="https://storage.googleapis.com/a1aa/image/eNgDP2iQxBwfoEi8AuzfKGN6Ib4gheWm2BL3WqN14K4yNN4PB.jpg" width="40"/>
-        <div class="ml-4">
-         <p class="font-semibold">
-          Ida Jorgensen
-         </p>
-         <p class="text-gray-500 text-sm">
-          Lorem Ipsum is simply...
-         </p>
-        </div>
-       </div>
-       <div class="flex items-center space-x-4">
-        <p class="text-gray-500 text-sm">
-         19 MAY 12:56
-        </p>
-        <button class="bg-red-500 text-white px-3 py-1 rounded-lg">
-         Reject
-        </button>
-        <button class="bg-green-500 text-white px-3 py-1 rounded-lg">
-         Approve
-        </button>
-       </div>
-      </div>
-      <div class="flex items-center justify-between">
-       <div class="flex items-center">
-        <img alt="User avatar" class="w-10 h-10 rounded-full" height="40" src="https://storage.googleapis.com/a1aa/image/eNgDP2iQxBwfoEi8AuzfKGN6Ib4gheWm2BL3WqN14K4yNN4PB.jpg" width="40"/>
-        <div class="ml-4">
-         <p class="font-semibold">
-          Albert Andersen
-         </p>
-         <p class="text-gray-500 text-sm">
-          Lorem Ipsum is simply...
-         </p>
-        </div>
-       </div>
-       <div class="flex items-center space-x-4">
-        <p class="text-gray-500 text-sm">
-         21 JULY 15:45
-        </p>
-        <button class="bg-red-500 text-white px-3 py-1 rounded-lg">
-         Reject
-        </button>
-        <button class="bg-green-500 text-white px-3 py-1 rounded-lg">
-         Approve
-        </button>
-       </div>
-      </div>
-     </div>
-    </div>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-     <div class="bg-white p-6 rounded-lg shadow">
-      <h2 class="text-xl font-semibold mb-4">
-       Upcoming Event
-      </h2>
-      <div class="flex items-center justify-between">
-       <div>
-        <p class="text-3xl font-semibold">
-         45
-        </p>
-        <p class="text-gray-500">
-         Competitors
-        </p>
-       </div>
-       <div class="text-purple-500 text-4xl">
-        <i class="fas fa-hand-peace">
-        </i>
-       </div>
-      </div>
-      <div class="mt-4">
-       <p class="text-gray-500">
-        You can participate in event
-       </p>
-       <div class="h-2 bg-purple-500 rounded-full mt-2" style="width: 34%;">
-       </div>
-      </div>
-     </div>
-     <div class="bg-white p-6 rounded-lg shadow">
-      <div class="flex items-center justify-between mb-4">
-       <div>
-        <p class="text-3xl font-semibold">
-         235
-        </p>
-        <p class="text-gray-500">
-         Total Ideas
-        </p>
-       </div>
-       <div class="text-green-500 text-4xl">
-        <i class="fas fa-lightbulb">
-        </i>
-       </div>
-      </div>
-      <div class="flex items-center justify-between">
-       <div>
-        <p class="text-3xl font-semibold">
-         26
-        </p>
-        <p class="text-gray-500">
-         Total Locations
-        </p>
-       </div>
-       <div class="text-blue-500 text-4xl">
-        <i class="fas fa-map-marker-alt">
-        </i>
-       </div>
-      </div>
-     </div>
+     <p class="text-xl">
+      Digital Library Website Template
+     </p>
+     <button class="bg-red-600 px-4 py-2 mt-4">
+      MORE INFO
+     </button>
     </div>
    </div>
-  </div>
+   <!-- Books Section -->
+   <section class="mt-8">
+    <h2 class="text-2xl font-bold mb-4">
+     BOOKS
+    </h2>
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+     <div class="flex flex-col items-center">
+      <img alt="No image available" class="w-full h-48 object-cover" height="200" src="https://storage.googleapis.com/a1aa/image/K1HwUHkEYlKDF50ZWfTizNWUfD90RBuIUfL6tWHKaV5fLu5PB.jpg" width="150"/>
+      <p class="text-center mt-2">
+       No image available
+      </p>
+     </div>
+     <div class="flex flex-col items-center">
+      <img alt="Book cover of 'Web Designers Idea Book'" class="w-full h-48 object-cover" height="200" src="https://storage.googleapis.com/a1aa/image/g3ST2rij6Y7JKN21sG9NxL4eALL9hKYd6NJWemmrgLv6ibenA.jpg" width="150"/>
+      <p class="text-center mt-2">
+       Web Designers Idea Book
+       <br/>
+       Patrick McNeil
+      </p>
+     </div>
+     <div class="flex flex-col items-center">
+      <img alt="Book cover of 'The Survivor'" class="w-full h-48 object-cover" height="200" src="https://storage.googleapis.com/a1aa/image/T7ZVd6KpirprC9L2QmMWHKbJ0cZnekeuReey28CJqSZSLu5PB.jpg" width="150"/>
+      <p class="text-center mt-2">
+       The Survivor (A Mitch Rapp Novel)
+       <br/>
+       Vince Flynn, Kyle Mills
+      </p>
+     </div>
+     <div class="flex flex-col items-center">
+      <img alt="Book cover of 'The Hobbit and The Lord of the Rings'" class="w-full h-48 object-cover" height="200" src="https://storage.googleapis.com/a1aa/image/Xda6wPJQDup9GZ3fFvqB4V2iuuYlCM7BefjTej3ZURQ2Lu5PB.jpg" width="150"/>
+      <p class="text-center mt-2">
+       The Hobbit and The Lord of the Rings
+       <br/>
+       J.R.R. Tolkien
+      </p>
+     </div>
+     <div class="flex flex-col items-center">
+      <img alt="Book cover of 'The Boys in the Boat'" class="w-full h-48 object-cover" height="200" src="https://storage.googleapis.com/a1aa/image/2AfG7LTrwlS0OyyEKVluyYP9oHrub0XNgUCZ0FuSlQf2ibenA.jpg" width="150"/>
+      <p class="text-center mt-2">
+       The Boys in the Boat
+       <br/>
+       Daniel James Brown
+      </p>
+     </div>
+     <div class="flex flex-col items-center">
+      <img alt="Book cover of 'The Book of CSS3'" class="w-full h-48 object-cover" height="200" src="https://storage.googleapis.com/a1aa/image/Vjqh7gslfx02QqLjBbVHRF7Iez7XO5xGpwfrhirviox3F38nA.jpg" width="150"/>
+      <p class="text-center mt-2">
+       The Book of CSS3
+       <br/>
+       Peter Gasston
+      </p>
+     </div>
+     <div class="flex flex-col items-center">
+      <img alt="Top Books Banner" class="w-full h-48 object-cover" height="200" src="https://storage.googleapis.com/a1aa/image/8fGf86RXieCn2puNT3DoCZ04p3uNFP82yLFptfVvujtJLu5PB.jpg" width="150"/>
+      <p class="text-center mt-2">
+       Top Books Banner
+      </p>
+     </div>
+    </div>
+   </section>
+  </main>
  </body>
 </html>
