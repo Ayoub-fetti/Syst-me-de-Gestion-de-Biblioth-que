@@ -1,6 +1,7 @@
 <?php
 define('BASE_URL', 'http://localhost/votre-projet');
-include 'classes/Categories.php';
+require_once '../connection.php';
+require_once '../classes/User.php';
 
 $categorie = new Categories("","");
 $message = '';

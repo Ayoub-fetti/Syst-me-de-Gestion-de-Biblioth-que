@@ -1,6 +1,7 @@
 <?php
 define('BASE_URL', 'http://localhost/votre-projet');
-include 'classes/Book.php';
+require_once '../connection.php';
+require_once '../classes/User.php';
 
 $message = '';
 $book = new Book("", "", 0, "", "", "");

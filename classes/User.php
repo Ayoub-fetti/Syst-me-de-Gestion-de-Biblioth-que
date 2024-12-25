@@ -1,4 +1,7 @@
 <?php 
+
+include '../connection.php';
+
 class user {
     private $pdo;
     private $id;
