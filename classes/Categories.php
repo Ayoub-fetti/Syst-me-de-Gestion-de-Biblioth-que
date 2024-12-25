@@ -1,5 +1,5 @@
 <?php
-include '../connection.php';
+require_once dirname(__DIR__) . '/connection.php';
 
 
 class Categories {

@@ -2,6 +2,7 @@
 define('BASE_URL', 'http://localhost/votre-projet');
 require_once '../connection.php';
 require_once '../classes/User.php';
+require_once '../classes/Categories.php';
 
 $categorie = new Categories("","");
 $message = '';

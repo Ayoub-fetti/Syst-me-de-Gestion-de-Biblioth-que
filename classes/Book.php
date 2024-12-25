@@ -1,6 +1,7 @@
 <?php
 
-include '../connection.php';
+// include '../connection.php';
+require_once dirname(__DIR__) . '/connection.php';
 
 class Book
 {
