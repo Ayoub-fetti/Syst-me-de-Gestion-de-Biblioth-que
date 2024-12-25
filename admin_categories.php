@@ -15,8 +15,9 @@ $categories = $categorie->getAllCategories();
 // Handle Delete
 if (isset($_POST['delete']) && isset($_POST['categorie_id'])) {
     $categorie->setCategoryId($_POST['categorie_id']);
-    if ($book->deleteCategory()) {
+    if ($categorie->deleteCategory()) {
         $message = "Categorie supprimé avec succès";
+        header('Location: admin_categories.php?message=' . urlencode($message));
     }
 }
 
@@ -58,7 +59,7 @@ if (isset($_POST['delete']) && isset($_POST['categorie_id'])) {
                     <td>
                         <a href="edit_categorie.php?id=<?php echo $categorie['id']; ?>" class="btn btn-sm btn-warning">Modifier</a>
                         <form method="POST" style="display: inline;">
-                            <input type="hidden" name="category_id" value="<?php echo $categorie['id']; ?>">
+                            <input type="hidden" name="categorie_id" value="<?php echo $categorie['id']; ?>">
                             <button type="submit" name="delete" class="btn btn-sm btn-danger" 
                                     onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce livre?')">
                                 Supprimer
