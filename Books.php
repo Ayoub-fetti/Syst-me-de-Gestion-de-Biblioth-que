@@ -21,7 +21,10 @@ $allBooks=$book->getAllBooks();
 //$titles= $book->getTitle();   j fais des gettes pour chaque attribut est c'est pas pratique, refaire avec $allbooks to get data for each card
 //$summaries=$book->getSummaries();
 
+
+
 ?>
+
 
 
     
@@ -30,22 +33,47 @@ $allBooks=$book->getAllBooks();
         ALL BOOKS
     </h1>
 
-    <!-- Déplace la classe grid à cet élément parent pour définir la grille -->
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
         <?php foreach ($allBooks as $book): ?>
-            <div class="text-center">
-                <img alt="The Book of CSS3" class="w-full h-auto" height="300" src="https://storage.googleapis.com/a1aa/image/xc2h0Gtvge0nQCxHem79mwBhMTtfmYEAkxfoccyUliJEnO6PB.jpg" width="200" />
-                <p name="title" class="mt-4 text-lg">
+            <div class="text-center bg-gray-100 p-4 rounded-lg shadow-md">
+                <img alt="The Book of CSS3" class="w-full h-auto rounded-lg" height="300" src="https://storage.googleapis.com/a1aa/image/xc2h0Gtvge0nQCxHem79mwBhMTtfmYEAkxfoccyUliJEnO6PB.jpg" width="200" />
+                
+                <p name="title" class="mt-4 text-lg font-semibold">
                     <?php echo $book['title']; ?>
                 </p>
-                <p name="summary" class="text-gray-600">
+
+                <p name="summary" class="text-gray-600 mt-2">
                     <?php echo $book['summary']; ?>
                 </p>
+
+                <!-- Conversion du statut -->
+                <p name="status" class="mt-2 text-gray-500">
+                    Status: 
+                    <?php 
+                        // Tableau associatif pour convertir les enums en texte
+                        $statusLabels = [
+                            'available' => 'Disponible',
+                            'borrowed' => 'Emprunté',
+                            'reserved' => 'Reservé'
+                        ];
+
+                        // Affichage du statut converti du enum status 
+                        echo isset($statusLabels[$book['status']]) ? $statusLabels[$book['status']] : 'Unknown';
+                    ?>
+                </p>
+
+                <!-- Bouton pour chaque card -->
+                <button class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
+                    Action
+                </button>
             </div>
         <?php endforeach; ?>
     </div>
 
 </body>
+
+
+
 
 
 </html>
