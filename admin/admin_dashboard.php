@@ -100,46 +100,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['userId']) && isset($_
         Admin Categories
        </span>
       </a>
-      <a class="flex items-center p-3 hover:bg-blue-800 rounded-lg" href="<?php echo BASE_URL; ?>/views/tables/index.php">
-       <i class="fas fa-table">
-       </i>
-       <span class="ml-3">
-        Table
-       </span>
-      </a>
+   
      </div>
-     <div class="mt-5">
-      <a class="flex items-center p-3 hover:bg-blue-800 rounded-lg" href="<?php echo BASE_URL; ?>/views/charts/index.php">
-       <i class="fas fa-chart-bar">
-       </i>
-       <span class="ml-3">
-        Chart
-       </span>
-      </a>
-      <a class="flex items-center p-3 hover:bg-blue-800 rounded-lg" href="<?php echo BASE_URL; ?>/views/maps/index.php">
-       <i class="fas fa-map">
-       </i>
-       <span class="ml-3">
-        Maps
-       </span>
-      </a>
-     </div>
-     <div class="mt-5">
-      <a class="flex items-center p-3 hover:bg-blue-800 rounded-lg" href="<?php echo BASE_URL; ?>/views/auth/login.php">
-       <i class="fas fa-user">
-       </i>
-       <span class="ml-3">
-        Authentication
-       </span>
-      </a>
-      <a class="flex items-center p-3 hover:bg-blue-800 rounded-lg" href="<?php echo BASE_URL; ?>/views/sample/index.php">
-       <i class="fas fa-file">
-       </i>
-       <span class="ml-3">
-        Sample page
-       </span>
-      </a>
-     </div>
+  
      <div class="mt-auto">
         <a href="../logout.php" class="flex items-center p-3 hover:bg-blue-800 rounded-lg text-red-500 hover:text-red-400">
             <i class="fas fa-sign-out-alt"></i>
