@@ -34,6 +34,8 @@ if (isset($_POST['submit'])) {
         $filename = $_FILES['cover_image']['name'];
         $ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
         
+
+        // Vérifier si l'extension est autorisée
         if (in_array($ext, $allowed)) {
             $cover_image = 'covers/' . uniqid() . '.' . $ext;
             move_uploaded_file($_FILES['cover_image']['tmp_name'], $cover_image);
