@@ -35,10 +35,13 @@ if (isset($_POST['submit'])) {
         $ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
         
 
-        // Vérifier si l'extension est autorisée
+        // Vérifier si l'extension est autoriséee
         if (in_array($ext, $allowed)) {
             $cover_image = 'covers/' . uniqid() . '.' . $ext;
             move_uploaded_file($_FILES['cover_image']['tmp_name'], $cover_image);
+        }   // Si l'extension n'est pas autorisée
+        else {
+            $message = "Seuls les fichiers JPG, JPEG et PNG sont autorisés";
         }
     }
 
