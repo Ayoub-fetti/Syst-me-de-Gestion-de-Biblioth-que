@@ -197,6 +197,45 @@ class Book
         return [];
     }
 
+    public function getAllCategories() {
+        $database = new Database;
+        $conn = $database->connect();
+
+        if ($conn) {
+            try {
+                $stmt = $conn->query("SELECT * FROM categories");
+                return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            } catch(PDOException $e) {
+                echo "Erreur: " . $e->getMessage();
+                return [];
+            }
+        }
+        return [];
+    }
+
+    public function getBooksByCategory($categoryId) {
+        $database = new Database;
+        $conn = $database->connect();
+
+        if ($conn) {
+            try {
+                if (empty($categoryId)) {
+                    // Si aucune catégorie n'est sélectionnée, retourner tous les livres
+                    return $this->getAllBooks();
+                }
+
+                $stmt = $conn->prepare("SELECT * FROM books WHERE category_id = ?");
+                $stmt->bindValue(1, $categoryId, PDO::PARAM_INT);
+                $stmt->execute();
+                return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            } catch(PDOException $e) {
+                echo "Erreur: " . $e->getMessage();
+                return [];
+            }
+        }
+        return [];
+    }
+
 }
 
 ?>

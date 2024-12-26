@@ -24,6 +24,19 @@ $allBooks = $book->getAllBooks();
         <input type="text" id="searchInput" name="keywords" placeholder="Search for books" class="border p-2 rounded">
     </form>
 
+    <div class="flex gap-4 mb-4">
+        <select id="categoryFilter" class="border p-2 rounded">
+            <option value="">Toutes les catégories</option>
+            <?php
+            // Créez une instance de votre classe Category ou utilisez une méthode de Book
+            $categories = $book->getAllCategories(); // Vous devrez créer cette méthode
+            foreach($categories as $category) {
+                echo "<option value='" . $category['id'] . "'>" . htmlspecialchars($category['name']) . "</option>";
+            }
+            ?>
+        </select>
+    </div>
+
     <h1 class="text-3xl font-bold mb-8">ALL BOOKS</h1>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8" id="booksContainer">
