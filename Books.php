@@ -48,13 +48,13 @@ function redirectToLogin() {
 }
 
 function openBorrowModal(bookId, bookTitle) {
-    document.getElementById('modal-book-id').value = bookId;
-    document.getElementById('modal-book-title').textContent = bookTitle;
-    document.getElementById('borrow-modal').classList.remove('hidden');
+    document.getElementById('borrow-book-id').value = bookId;
+    document.getElementById('borrow-book-title').textContent = bookTitle;
+    document.getElementById('borrowModal').classList.remove('hidden');
 }
 
 function closeBorrowModal() {
-    document.getElementById('borrow-modal').classList.add('hidden');
+    document.getElementById('borrowModal').classList.add('hidden');
 }
 
 function validateDueDate(input) {
@@ -93,9 +93,54 @@ function openReserveModal(bookId, title) {
 function closeReserveModal() {
     document.getElementById('reserve-modal').classList.add('hidden');
 }
+
+function openReservationModal(bookId, bookTitle, dueDate) {
+    document.getElementById('reserve-book-id').value = bookId;
+    document.getElementById('reserve-book-title').textContent = bookTitle;
+    document.getElementById('current-due-date').textContent = dueDate;
+    document.getElementById('reservation_date').min = dueDate;
+    document.getElementById('reservationModal').classList.remove('hidden');
+}
+
+function closeReservationModal() {
+    document.getElementById('reservationModal').classList.add('hidden');
+}
+
+// Event listener pour le bouton de fermeture
+document.getElementById('closeReservationModal').addEventListener('click', function() {
+    closeReservationModal();
+});
+
+// Fermer le modal si on clique en dehors
+window.addEventListener('click', function(event) {
+    let modal = document.getElementById('reservationModal');
+    if (event.target === modal) {
+        closeReservationModal();
+    }
+});
+
+// Empêcher la propagation du clic depuis le contenu du modal
+document.querySelector('#reservationModal > div').addEventListener('click', function(event) {
+    event.stopPropagation();
+});
 </script>
 
 <body class="bg-white p-8">
+    <!-- Messages de succès/erreur -->
+    <?php if (isset($_SESSION['success_message'])): ?>
+        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+            <span class="block sm:inline"><?php echo $_SESSION['success_message']; ?></span>
+            <?php unset($_SESSION['success_message']); ?>
+        </div>
+    <?php endif; ?>
+
+    <?php if (isset($_SESSION['error_message'])): ?>
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+            <span class="block sm:inline"><?php echo $_SESSION['error_message']; ?></span>
+            <?php unset($_SESSION['error_message']); ?>
+        </div>
+    <?php endif; ?>
+
     <!-- Message de succes -->
     <?php if ($message): ?>
     <div id="success-message" class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">
@@ -107,118 +152,146 @@ function closeReserveModal() {
         ALL BOOKS
     </h1>
 
-    <!-- Modal d'emprunt -->
-    <div id="borrow-modal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+    <!-- Modal pour l'emprunt -->
+    <div id="borrowModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden overflow-y-auto h-full w-full">
         <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
             <div class="mt-3 text-center">
-                <h3 class="text-lg leading-6 font-medium text-gray-900">Emprunter un livre</h3>
+                <h3 class="text-lg leading-6 font-medium text-gray-900">Emprunter le livre</h3>
                 <div class="mt-2 px-7 py-3">
-                    <p class="text-sm text-gray-500" id="modal-book-title"></p>
-                </div>
-                <form action="process_borrow.php" method="POST">
-                    <input type="hidden" id="modal-book-id" name="book_id">
-                    <div class="mb-4">
-                        <label class="block text-gray-700 text-sm font-bold mb-2">Date de retour prévue</label>
-                        <input type="date" name="due_date" 
-                               class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                               required
-                               min="<?php echo date('Y-m-d', strtotime('+1 day')); ?>"
-                               max="<?php echo date('Y-m-d', strtotime('+14 days')); ?>"
-                               onchange="validateDueDate(this)">
-                    </div>
-                    <div class="items-center px-4 py-3">
-                        <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 w-full mb-2">
+                    <p class="text-sm text-gray-500" id="borrow-book-title"></p>
+                    <form id="borrowForm" action="process_borrow.php" method="POST" class="mt-4">
+                        <input type="hidden" name="book_id" id="borrow-book-id">
+                        
+                        <div class="mb-4">
+                            <label class="block text-gray-700 text-sm font-bold mb-2">Date de retour prévue</label>
+                            <input type="date" name="due_date" 
+                                   class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                   required>
+                        </div>
+                        
+                        <button type="submit" 
+                                class="px-4 py-2 bg-blue-500 text-white text-base font-medium rounded-md shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300">
                             Confirmer l'emprunt
                         </button>
-                        <button type="button" onclick="closeBorrowModal()" class="px-4 py-2 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-400 w-full">
-                            Annuler
-                        </button>
-                    </div>
-                </form>
+                    </form>
+                </div>
+                <div class="items-center px-4 py-3">
+                    <button onclick="closeBorrowModal()" 
+                            class="px-4 py-2 bg-gray-500 text-white text-base font-medium rounded-md shadow-sm hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-300">
+                        Fermer
+                    </button>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- Modal de réservation -->
-    <div id="reserve-modal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+    <!-- Modal pour la réservation -->
+    <div id="reservationModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden overflow-y-auto h-full w-full">
         <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
             <div class="mt-3 text-center">
-                <h3 class="text-lg leading-6 font-medium text-gray-900">Réserver un livre</h3>
+                <h3 class="text-lg leading-6 font-medium text-gray-900">Réserver le livre</h3>
                 <div class="mt-2 px-7 py-3">
-                    <p class="text-sm text-gray-500" id="modal-book-title"></p>
-                    <p class="text-sm text-gray-500">Date de retour prévue : <span id="modal-due-date"></span></p>
-                </div>
-                <form action="process_book_action.php" method="POST">
-                    <input type="hidden" id="modal-book-id" name="book_id">
-                    <div class="mb-4">
-                        <label class="block text-gray-700 text-sm font-bold mb-2">Date de réservation souhaitée</label>
-                        <input type="date" name="reservation_date" 
-                               class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                               required
-                               id="reservation-date">
-                    </div>
-                    <div class="items-center px-4 py-3">
-                        <button type="submit" name="action" value="reserve" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 w-full mb-2">
+                    <p class="text-sm text-gray-500" id="reserve-book-title"></p>
+                    <p class="text-sm text-gray-500 mt-2">
+                        Ce livre est actuellement emprunté.
+                        <br>Date de retour prévue : <span id="current-due-date"></span>
+                    </p>
+                    <form id="reservationForm" action="process_book_action.php" method="POST" class="mt-4">
+                        <input type="hidden" name="book_id" id="reserve-book-id">
+                        <input type="hidden" name="action" value="reserve">
+                        
+                        <div class="mb-4">
+                            <label class="block text-gray-700 text-sm font-bold mb-2">Date de réservation souhaitée</label>
+                            <input type="date" name="reservation_date" id="reservation_date" 
+                                   class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                   required>
+                        </div>
+                        
+                        <button type="submit" 
+                                class="px-4 py-2 bg-blue-500 text-white text-base font-medium rounded-md shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300">
                             Confirmer la réservation
                         </button>
-                        <button type="button" onclick="closeReserveModal()" class="px-4 py-2 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-400 w-full">
-                            Annuler
-                        </button>
-                    </div>
-                </form>
+                    </form>
+                </div>
+                <div class="items-center px-4 py-3">
+                    <button onclick="closeReservationModal()" 
+                            class="px-4 py-2 bg-gray-500 text-white text-base font-medium rounded-md shadow-sm hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-300">
+                        Fermer
+                    </button>
+                </div>
             </div>
         </div>
     </div>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <?php foreach ($allBooks as $book): ?>
-            <div class="text-center bg-gray-100 p-4 rounded-lg shadow-md">
-                <img alt="The Book of CSS3" class="w-full h-auto rounded-lg" height="300" src="<?php echo $book['cover_image']; ?>" width="200" />                
-                <p name="title" class="mt-4 text-lg font-semibold">
-                    <?php echo $book['title']; ?>
-                </p>
+            <div class="bg-white p-4 rounded-lg shadow-md">
+                <img src="<?php echo htmlspecialchars($book['cover_image']); ?>" 
+                     alt="<?php echo htmlspecialchars($book['title']); ?>" 
+                     class="w-full h-64 object-cover rounded-md mb-4">
+                
+                <h3 class="text-xl font-semibold mb-2"><?php echo htmlspecialchars($book['title']); ?></h3>
+                <p class="text-gray-600 mb-2">Par <?php echo htmlspecialchars($book['author']); ?></p>
+                
+                <!-- Ajout de l'affichage du statut -->
+                <?php
+                $statusClass = '';
+                $statusText = '';
+                switch($book['status']) {
+                    case 'available':
+                        $statusClass = 'bg-green-100 text-green-800';
+                        $statusText = 'Disponible';
+                        break;
+                    case 'borrowed':
+                        $statusClass = 'bg-red-100 text-red-800';
+                        $statusText = 'Emprunté';
+                        break;
+                    case 'reserved':
+                        $statusClass = 'bg-yellow-100 text-yellow-800';
+                        $statusText = 'Réservé';
+                        break;
+                }
+                ?>
+                <div class="mb-4">
+                    <span class="px-2 py-1 rounded-full text-sm <?php echo $statusClass; ?>">
+                        <?php echo $statusText; ?>
+                    </span>
+                </div>
 
-                <p name="summary" class="text-gray-600 mt-2">
-                    <?php echo $book['summary']; ?>
-                </p>
-
-                <p name="status" class="mt-2 text-gray-500">
-                    Status: 
-                    <?php 
-                        $statusLabels = [
-                            'available' => 'Disponible',
-                            'borrowed' => 'Emprunté',
-                            'reserved' => 'Reservé'
-                        ];
-                        $statusValue = $book['status'];
-                        echo isset($statusLabels[$statusValue]) ? $statusLabels[$statusValue] : 'Unknown';
-                    ?>
-                </p>
-
-                <!-- Bouton pour chaque card -->
+                <p class="text-gray-700 mb-4"><?php echo htmlspecialchars($book['summary']); ?></p>
+                
                 <?php if ($isLoggedIn): ?>
-                    <?php if ($statusValue == 'available'): ?>
+                    <?php if ($book['status'] == 'available'): ?>
                         <button type="button" 
                                 onclick="openBorrowModal('<?php echo $book['id']; ?>', '<?php echo htmlspecialchars($book['title']); ?>')"
                                 class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
                             Emprunter maintenant!
                         </button>
                     <?php else: ?>
-                        <form method="POST" action="process_book_action.php">
-                            <input type="hidden" name="book_id" value="<?php echo $book['id']; ?>">
-                            <button type="submit" 
-                                    name="action" 
-                                    value="reserve"
-                                    class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
-                                Réserver
-                            </button>
-                        </form>
+                        <?php
+                        $stmt = $pdo->prepare("SELECT due_date FROM borrowings WHERE book_id = ? AND return_date IS NULL ORDER BY due_date DESC LIMIT 1");
+                        $stmt->execute([$book['id']]);
+                        $currentBorrowing = $stmt->fetch();
+                        $dueDate = $currentBorrowing ? $currentBorrowing['due_date'] : date('Y-m-d');
+                        ?>
+                        <div class="text-sm text-gray-600 mb-2">
+                            Date de retour prévue : <?php echo date('d/m/Y', strtotime($dueDate)); ?>
+                        </div>
+                        <button type="button" 
+                                onclick="openReservationModal(
+                                    '<?php echo $book['id']; ?>', 
+                                    '<?php echo htmlspecialchars($book['title']); ?>', 
+                                    '<?php echo $dueDate; ?>'
+                                )"
+                                class="mt-2 px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600">
+                            Réserver
+                        </button>
                     <?php endif; ?>
                 <?php else: ?>
                     <button type="button" 
                             onclick="return redirectToLogin()"
                             class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
-                        <?php echo $statusValue == 'available' ? 'Emprunter maintenant!' : 'Réserver'; ?>
+                        Se connecter pour emprunter
                     </button>
                 <?php endif; ?>
             </div>
