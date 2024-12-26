@@ -2,6 +2,13 @@
 define('BASE_URL', 'http://localhost/votre-projet');
 require_once '../classes/Book.php';
 require_once '../connection.php';
+require_once 'check_admin.php';
+
+// Vérification de la session admin
+if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'admin') {
+    header('Location: ../login.php');
+    exit();
+}
 
 $book = new Book("", "", 0, "", "", "");
 $message = '';

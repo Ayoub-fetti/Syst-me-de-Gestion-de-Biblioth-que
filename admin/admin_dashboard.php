@@ -1,8 +1,14 @@
 <?php
-define('BASE_URL', 'http://localhost/votre-projet');
+require_once '../constants.php';
 require_once '../connection.php';
 require_once '../classes/User.php';
 session_start();
+
+// Vérification de la session admin
+if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'admin') {
+    header('Location: ../login.php');
+    exit();
+}
 
 $db = new Database();
 $pdo = $db->connect();
@@ -77,20 +83,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['userId']) && isset($_
      </a>
      <div class="mt-5">
   
-      <a class="flex items-center p-3 hover:bg-blue-800 rounded-lg" href="<?php echo BASE_URL; ?>/views/components/index.php">
+      <a class="flex items-center p-3 hover:bg-blue-800 rounded-lg" href="<?php echo BASE_URL; ?>/admin/admin_books.php">
+        
        <i class="fas fa-cube">
        </i>
        <span class="ml-3">
-        Components
+        Admin Books
        </span>
       </a>
      </div>
      <div class="mt-5">
-      <a class="flex items-center p-3 hover:bg-blue-800 rounded-lg" href="<?php echo BASE_URL; ?>/views/forms/index.php">
+      <a class="flex items-center p-3 hover:bg-blue-800 rounded-lg" href="<?php echo BASE_URL; ?>/admin/admin_categories.php">
        <i class="fas fa-edit">
        </i>
        <span class="ml-3">
-        Form elements
+        Admin Categories
        </span>
       </a>
       <a class="flex items-center p-3 hover:bg-blue-800 rounded-lg" href="<?php echo BASE_URL; ?>/views/tables/index.php">
@@ -133,6 +140,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['userId']) && isset($_
        </span>
       </a>
      </div>
+     <div class="mt-auto">
+        <a href="../logout.php" class="flex items-center p-3 hover:bg-blue-800 rounded-lg text-red-500 hover:text-red-400">
+            <i class="fas fa-sign-out-alt"></i>
+            <span class="ml-3">
+                Déconnexion
+            </span>
+        </a>
+    </div>
     </nav>
    </div>
    <!-- Main Content -->
