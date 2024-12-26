@@ -40,7 +40,7 @@ $allBooks=$book->getAllBooks();
                 </p>
 
                 <p name="summary" class="text-gray-600 mt-2">
-                    <?php echo $book['cover_image']; ?>
+                    <?php echo $book['summary']; ?>
                 </p>
 
                 <!-- Conversion du statut -->

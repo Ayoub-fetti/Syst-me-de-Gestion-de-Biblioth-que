@@ -176,7 +176,26 @@ class Book
     }
 */    // duplicated, not useful i worked with $Allbooks array to get titles and summaries for each book
 
+    public function searchBooks($searchTerm) {
+        $database = new Database;
+        $conn = $database->connect();
 
+        if ($conn) {
+            try {
+                $searchTerm = "%$searchTerm%";
+                $query = "SELECT * FROM books WHERE title LIKE :search OR author LIKE :search";
+                
+                $stmt = $conn->prepare($query);
+                $stmt->bindParam(':search', $searchTerm);
+                $stmt->execute();
+                return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            } catch(PDOException $e) {
+                echo "Erreur: " . $e->getMessage();
+                return [];
+            }
+        }
+        return [];
+    }
 
 }
 
