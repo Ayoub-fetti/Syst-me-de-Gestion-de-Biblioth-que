@@ -38,10 +38,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     header("Location: admin/admin_dashboard.php");
                     break;
                 case 'visitor':
-                    header("Location: index.php");
-                    break;
                 case 'authenticated':
-                    header("Location: user_dashboard.php");
+                    header("Location: index.php");
                     break;
                 default:
                     header("Location: index.php");

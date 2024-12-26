@@ -1,3 +1,13 @@
+<?php
+session_start();
+
+// Vérification de la session utilisateur
+if (!isset($_SESSION['user_id']) || ($_SESSION['user_role'] !== 'authenticated' && $_SESSION['user_role'] !== 'admin')) {
+    header('Location: login.php');
+    exit();
+}
+?>
+<!DOCTYPE html>
 <html lang="en">
  <head>
   <meta charset="utf-8"/>
@@ -132,8 +142,4 @@
    </section>
   </main>
  </body>
-<<<<<<< HEAD
 </html>
-=======
-</html>
->>>>>>> 5c87fed685b66d25f054effd6eb6915858dc8468
