@@ -20,8 +20,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $user = new User($pdo);
     $user->setId($_SESSION['user_id']);
     
-    // Emprunter le livre
-    $result = $user->borrowBook($book_id);
+    // Emprunter le livre avec la date de retour prévue
+    $result = $user->borrowBook($book_id, $due_date);
     
     if ($result['success']) {
         $_SESSION['borrow_message'] = "Le livre a été emprunté avec succès!";

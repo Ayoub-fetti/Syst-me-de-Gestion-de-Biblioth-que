@@ -120,7 +120,7 @@ public function deleteUser($userId) {
     }
 }
 
-public function borrowBook($bookId) {
+public function borrowBook($bookId, $dueDate = null) {
     try {
         // Vérifier si le livre est disponible
         $stmt = $this->pdo->prepare("SELECT status FROM books WHERE id = ?");
@@ -142,8 +142,12 @@ public function borrowBook($bookId) {
         $this->pdo->beginTransaction();
 
         // Créer l'emprunt dans la table borrowings
-        $stmt = $this->pdo->prepare("INSERT INTO borrowings (user_id, book_id, borrow_date, due_date) VALUES (?, ?, CURDATE(), DATE_ADD(CURDATE(), INTERVAL 14 DAY))");
-        $stmt->execute([$this->id, $bookId]);
+        $stmt = $this->pdo->prepare("INSERT INTO borrowings (user_id, book_id, borrow_date, due_date) VALUES (?, ?, CURDATE(), ?)");
+        $stmt->execute([
+            $this->id, 
+            $bookId, 
+            $dueDate ?? date('Y-m-d', strtotime('+14 days')) // Utilise la date fournie ou par défaut +14 jours
+        ]);
 
         // Mettre à jour le statut du livre
         $stmt = $this->pdo->prepare("UPDATE books SET status = 'borrowed' WHERE id = ?");
@@ -164,8 +168,15 @@ public function borrowBook($bookId) {
 
 public function reserveBook($bookId) {
     try {
-        // Vérifier si le livre est emprunté
-        $stmt = $this->pdo->prepare("SELECT status FROM books WHERE id = ?");
+        // Vérifier si le livre est emprunté et obtenir la date de retour prévue
+        $stmt = $this->pdo->prepare("
+            SELECT b.status, br.due_date 
+            FROM books b 
+            LEFT JOIN borrowings br ON b.id = br.book_id 
+            WHERE b.id = ? AND br.return_date IS NULL
+            ORDER BY br.borrow_date DESC 
+            LIMIT 1
+        ");
         $stmt->execute([$bookId]);
         $book = $stmt->fetch();
 
@@ -173,16 +184,60 @@ public function reserveBook($bookId) {
             return ['success' => false, 'message' => "Ce livre ne peut pas être réservé actuellement."];
         }
 
-        // Créer la réservation dans la table borrowings
-        // Note: pour une réservation, borrow_date est la date de réservation
-        $stmt = $this->pdo->prepare("INSERT INTO borrowings (user_id, book_id, borrow_date, due_date) VALUES (?, ?, CURDATE(), NULL)");
+        // Vérifier si l'utilisateur a déjà réservé ce livre
+        $stmt = $this->pdo->prepare("
+            SELECT * FROM borrowings 
+            WHERE user_id = ? AND book_id = ? 
+            AND return_date IS NULL 
+            AND reservation_date IS NOT NULL
+        ");
         $stmt->execute([$this->id, $bookId]);
+        if ($stmt->fetch()) {
+            return ['success' => false, 'message' => "Vous avez déjà réservé ce livre."];
+        }
 
-        // Mettre à jour le statut du livre
-        $stmt = $this->pdo->prepare("UPDATE books SET status = 'reserved' WHERE id = ?");
+        return [
+            'success' => true, 
+            'due_date' => $book['due_date'],
+            'message' => "Livre disponible pour réservation."
+        ];
+    } catch(PDOException $e) {
+        return ['success' => false, 'message' => "Erreur lors de la vérification: " . $e->getMessage()];
+    }
+}
+
+public function confirmReservation($bookId, $reservationDate) {
+    try {
+        // Vérifier d'abord si le livre est disponible pour réservation
+        $stmt = $this->pdo->prepare("SELECT status FROM books WHERE id = ?");
         $stmt->execute([$bookId]);
+        $book = $stmt->fetch();
 
-        return ['success' => true, 'message' => "Livre réservé avec succès."];
+        if (!$book || $book['status'] !== 'available') {
+            return ['success' => false, 'message' => "Ce livre n'est pas disponible pour réservation."];
+        }
+
+        // Commencer une transaction
+        $this->pdo->beginTransaction();
+
+        try {
+            // Créer la réservation dans la table borrowings
+            $stmt = $this->pdo->prepare("
+                INSERT INTO borrowings (user_id, book_id, borrow_date, reservation_date) 
+                VALUES (?, ?, CURDATE(), ?)
+            ");
+            $stmt->execute([$this->id, $bookId, $reservationDate]);
+
+            // Mettre à jour le statut du livre
+            $stmt = $this->pdo->prepare("UPDATE books SET status = 'reserved' WHERE id = ?");
+            $stmt->execute([$bookId]);
+
+            $this->pdo->commit();
+            return ['success' => true, 'message' => "Livre réservé avec succès pour le " . $reservationDate];
+        } catch (Exception $e) {
+            $this->pdo->rollBack();
+            throw $e;
+        }
     } catch(PDOException $e) {
         return ['success' => false, 'message' => "Erreur lors de la réservation: " . $e->getMessage()];
     }

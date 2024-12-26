@@ -28,7 +28,12 @@ $result = [];
 if ($action === 'borrow') {
     $result = $user->borrowBook($bookId);
 } elseif ($action === 'reserve') {
-    $result = $user->reserveBook($bookId);
+    if (!isset($_POST['reservation_date'])) {
+        $_SESSION['error_message'] = "Date de réservation manquante";
+        header('Location: books.php');
+        exit();
+    }
+    $result = $user->confirmReservation($bookId, $_POST['reservation_date']);
 }
 
 // Rediriger avec un message

@@ -56,6 +56,43 @@ function openBorrowModal(bookId, bookTitle) {
 function closeBorrowModal() {
     document.getElementById('borrow-modal').classList.add('hidden');
 }
+
+function validateDueDate(input) {
+    const selectedDate = new Date(input.value);
+    const maxDate = new Date();
+    maxDate.setDate(maxDate.getDate() + 14);
+    
+    if (selectedDate > maxDate) {
+        alert('La date de retour ne peut pas dépasser 14 jours à partir d\'aujourd\'hui');
+        input.value = maxDate.toISOString().split('T')[0];
+    }
+}
+
+function openReserveModal(bookId, title) {
+    // Vérifier d'abord si le livre peut être réservé
+    fetch('check_reservation.php?book_id=' + bookId)
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                document.getElementById('modal-book-id').value = bookId;
+                document.getElementById('modal-book-title').textContent = title;
+                document.getElementById('modal-due-date').textContent = data.due_date;
+                
+                // Configurer la date minimale de réservation
+                const dueDateObj = new Date(data.due_date);
+                const minDate = dueDateObj.toISOString().split('T')[0];
+                document.getElementById('reservation-date').min = minDate;
+                
+                document.getElementById('reserve-modal').classList.remove('hidden');
+            } else {
+                alert(data.message);
+            }
+        });
+}
+
+function closeReserveModal() {
+    document.getElementById('reserve-modal').classList.add('hidden');
+}
 </script>
 
 <body class="bg-white p-8">
@@ -86,13 +123,45 @@ function closeBorrowModal() {
                                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                                required
                                min="<?php echo date('Y-m-d', strtotime('+1 day')); ?>"
-                               max="<?php echo date('Y-m-d', strtotime('+14 days')); ?>">
+                               max="<?php echo date('Y-m-d', strtotime('+14 days')); ?>"
+                               onchange="validateDueDate(this)">
                     </div>
                     <div class="items-center px-4 py-3">
                         <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 w-full mb-2">
                             Confirmer l'emprunt
                         </button>
                         <button type="button" onclick="closeBorrowModal()" class="px-4 py-2 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-400 w-full">
+                            Annuler
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de réservation -->
+    <div id="reserve-modal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+        <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+            <div class="mt-3 text-center">
+                <h3 class="text-lg leading-6 font-medium text-gray-900">Réserver un livre</h3>
+                <div class="mt-2 px-7 py-3">
+                    <p class="text-sm text-gray-500" id="modal-book-title"></p>
+                    <p class="text-sm text-gray-500">Date de retour prévue : <span id="modal-due-date"></span></p>
+                </div>
+                <form action="process_book_action.php" method="POST">
+                    <input type="hidden" id="modal-book-id" name="book_id">
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2">Date de réservation souhaitée</label>
+                        <input type="date" name="reservation_date" 
+                               class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                               required
+                               id="reservation-date">
+                    </div>
+                    <div class="items-center px-4 py-3">
+                        <button type="submit" name="action" value="reserve" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 w-full mb-2">
+                            Confirmer la réservation
+                        </button>
+                        <button type="button" onclick="closeReserveModal()" class="px-4 py-2 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-400 w-full">
                             Annuler
                         </button>
                     </div>
