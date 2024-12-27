@@ -5,6 +5,7 @@ require_once dirname(__DIR__) . '/connection.php';
 
 class Book
 {
+    private $pdo;
     private $id;
     private $title;
     private $author;
@@ -14,11 +15,15 @@ class Book
     private $summary;
     private $status;
 
-    public function __construct($title, $author,$category_id, $cover_image, $summary, $status)
+    public function __construct($title, $author, $category_id, $cover_image, $summary, $status)
     {
+        // Initialiser la connexion  la DB
+        $database = new Database();
+        $this->pdo = $database->connect();
+        
         $this->title = $title;
         $this->author = $author;
-        $this->category_id=$category_id;
+        $this->category_id = $category_id;
         $this->cover_image = $cover_image;
         $this->summary = $summary;
         $this->status = $status;
@@ -203,6 +208,58 @@ class Book
             }
         }
         return [];
+    }
+
+    // fonction pour recuperer les livres les plus empruntees 
+
+    public function getMostBorrowedBooks($limit = 5) {
+        try {
+            $stmt = $this->pdo->prepare("
+                SELECT 
+                    b.id,
+                    b.title,
+                    b.author,
+                    COUNT(br.id) as borrow_count
+                FROM books b
+                LEFT JOIN borrowings br ON b.id = br.book_id
+                GROUP BY b.id, b.title, b.author
+                HAVING borrow_count > 0
+                ORDER BY borrow_count DESC
+                LIMIT ?
+            ");
+            $stmt->execute([$limit]);
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch(PDOException $e) {
+            return [];
+        }
+    }
+
+    // fonction pour recuperer les staistics des livres
+
+    public function getBookStatistics() {
+        try {
+            $stats = [];
+            
+            // Total des livres
+            $stmt = $this->pdo->query("SELECT COUNT(*) FROM books");
+            $stats['total_books'] = $stmt->fetchColumn();
+            
+            // Livres empruntés
+            $stmt = $this->pdo->query("SELECT COUNT(*) FROM books WHERE status = 'borrowed'");
+            $stats['borrowed_books'] = $stmt->fetchColumn();
+            
+            // Livres disponibles
+            $stmt = $this->pdo->query("SELECT COUNT(*) FROM books WHERE status = 'available'");
+            $stats['available_books'] = $stmt->fetchColumn();
+            
+            // Total des emprunts
+            $stmt = $this->pdo->query("SELECT COUNT(*) FROM borrowings");
+            $stats['total_borrowings'] = $stmt->fetchColumn();
+            
+            return $stats;
+        } catch(PDOException $e) {
+            return [];
+        }
     }
 
 }

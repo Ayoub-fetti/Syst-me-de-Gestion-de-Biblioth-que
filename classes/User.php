@@ -131,7 +131,7 @@ public function borrowBook($bookId, $dueDate = null) {
             return ['success' => false, 'message' => "Ce livre n'est pas disponible."];
         }
 
-        // Vérifier si l'utilisateur a déjà emprunté ce livre
+        // check si l'utilisateur a deja emprunte ce livre
         $stmt = $this->pdo->prepare("SELECT * FROM borrowings WHERE user_id = ? AND book_id = ? AND return_date IS NULL");
         $stmt->execute([$this->id, $bookId]);
         if ($stmt->fetch()) {
@@ -141,7 +141,7 @@ public function borrowBook($bookId, $dueDate = null) {
         // Commencer une transaction
         $this->pdo->beginTransaction();
 
-        // Créer l'emprunt dans la table borrowings
+        // Creer l'emprunt dans la table borrowings
         $stmt = $this->pdo->prepare("INSERT INTO borrowings (user_id, book_id, borrow_date, due_date) VALUES (?, ?, CURDATE(), ?)");
         $stmt->execute([
             $this->id, 
@@ -149,7 +149,7 @@ public function borrowBook($bookId, $dueDate = null) {
             $dueDate ?? date('Y-m-d', strtotime('+14 days')) // Utilise la date fournie ou par défaut +14 jours
         ]);
 
-        // Mettre à jour le statut du livre
+        // update  le statut du livre
         $stmt = $this->pdo->prepare("UPDATE books SET status = 'borrowed' WHERE id = ?");
         $stmt->execute([$bookId]);
 
@@ -168,7 +168,7 @@ public function borrowBook($bookId, $dueDate = null) {
 
 public function reserveBook($bookId) {
     try {
-        // Vérifier si le livre est emprunté et obtenir la date de retour prévue
+        // check si le livre est emprunte et obtenir la date de retour prevue
         $stmt = $this->pdo->prepare("
             SELECT b.status, br.due_date 
             FROM books b 
@@ -184,7 +184,7 @@ public function reserveBook($bookId) {
             return ['success' => false, 'message' => "Ce livre ne peut pas être réservé actuellement."];
         }
 
-        // Vérifier si l'utilisateur a déjà réservé ce livre
+        // Verifier si l'utilisateur a deja reserve ce livre
         $stmt = $this->pdo->prepare("
             SELECT * FROM borrowings 
             WHERE user_id = ? AND book_id = ? 
@@ -208,7 +208,7 @@ public function reserveBook($bookId) {
 
 public function confirmReservation($bookId, $reservationDate) {
     try {
-        // Vérifier si le livre existe
+        // check si le livre existe
         $stmt = $this->pdo->prepare("SELECT status FROM books WHERE id = ?");
         $stmt->execute([$bookId]);
         $book = $stmt->fetch();
@@ -217,7 +217,7 @@ public function confirmReservation($bookId, $reservationDate) {
             return ['success' => false, 'message' => "Livre non trouvé."];
         }
 
-        // Vérifier si l'utilisateur a déjà réservé ce livre
+        // Verifier si l'utilisateur a deja reserve ce livre
         $stmt = $this->pdo->prepare("
             SELECT * FROM borrowings 
             WHERE user_id = ? AND book_id = ? 
@@ -232,14 +232,14 @@ public function confirmReservation($bookId, $reservationDate) {
         $this->pdo->beginTransaction();
 
         try {
-            // Créer une nouvelle réservation sans le champ status
+            // Creer une nouvelle reservation sans le champ status
             $stmt = $this->pdo->prepare("
                 INSERT INTO borrowings (user_id, book_id, borrow_date, due_date) 
                 VALUES (?, ?, ?, DATE_ADD(?, INTERVAL 14 DAY))
             ");
             $stmt->execute([$this->id, $bookId, $reservationDate, $reservationDate]);
 
-            // Mettre à jour le statut du livre si ce n'est pas déjà fait
+            // Mettre a jour le statut du livre si ce n'est pas deja fait
             if ($book['status'] == 'available') {
                 $stmt = $this->pdo->prepare("UPDATE books SET status = 'reserved' WHERE id = ?");
                 $stmt->execute([$bookId]);
@@ -258,6 +258,62 @@ public function confirmReservation($bookId, $reservationDate) {
 
 public function setId($id) {
     $this->id = $id;
+}
+
+
+// fonction pour recuperer les utilisateurs les plus actives 
+
+public function getMostActiveUsers($limit = 5) {
+    try {
+        $stmt = $this->pdo->prepare("
+            SELECT 
+                u.id,
+                u.name,
+                u.email,
+                COUNT(br.id) as borrow_count
+            FROM users u
+            LEFT JOIN borrowings br ON u.id = br.user_id
+            GROUP BY u.id, u.name, u.email
+            HAVING borrow_count > 0
+            ORDER BY borrow_count DESC
+            LIMIT ?
+        ");
+        $stmt->execute([$limit]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch(PDOException $e) {
+        return [];
+    }
+}
+
+// fonction pour recuperer les statistiques des utilisateur 
+public function getUserStatistics() {
+    try {
+        $stats = [];
+        
+        // Total des utilisateurs
+        $stmt = $this->pdo->query("SELECT COUNT(*) FROM users");
+        $stats['total_users'] = $stmt->fetchColumn();
+        
+        // Utilisateurs actifs (avec au moins un emprunt)
+        $stmt = $this->pdo->query("
+            SELECT COUNT(DISTINCT user_id) 
+            FROM borrowings 
+            WHERE return_date IS NULL
+        ");
+        $stats['active_users'] = $stmt->fetchColumn();
+        
+        // Emprunts actifs
+        $stmt = $this->pdo->query("
+            SELECT COUNT(*) 
+            FROM borrowings 
+            WHERE return_date IS NULL
+        ");
+        $stats['active_borrowings'] = $stmt->fetchColumn();
+        
+        return $stats;
+    } catch(PDOException $e) {
+        return [];
+    }
 }
 
 }
