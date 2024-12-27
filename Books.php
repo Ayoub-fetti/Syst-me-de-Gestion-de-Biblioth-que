@@ -224,6 +224,13 @@ document.querySelector('#reservationModal > div').addEventListener('click', func
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <?php foreach ($allBooks as $book): ?>
+<<<<<<< HEAD
+            <div class="text-center bg-gray-100 p-4 rounded-lg shadow-md">
+            <img alt="The Book of CSS3" class="w-full h-auto rounded-lg" height="300" src="<?php echo $book['cover_image']; ?>" width="200" />                
+                <p name="title" class="mt-4 text-lg font-semibold">
+                    <?php echo $book['title']; ?>
+                </p>
+=======
             <div class="bg-white p-4 rounded-lg shadow-md">
                 <img src="<?php echo htmlspecialchars($book['cover_image']); ?>" 
                      alt="<?php echo htmlspecialchars($book['title']); ?>" 
@@ -256,6 +263,7 @@ document.querySelector('#reservationModal > div').addEventListener('click', func
                         <?php echo $statusText; ?>
                     </span>
                 </div>
+>>>>>>> 8fa1c9fb0b34521df13255a5db9ecf592b795f94
 
                 <p class="text-gray-700 mb-4"><?php echo htmlspecialchars($book['summary']); ?></p>
                 
