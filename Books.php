@@ -125,6 +125,7 @@ document.querySelector('#reservationModal > div').addEventListener('click', func
 </script>
 
 <body class="bg-white p-8">
+    
     <!-- Messages de succès/erreur -->
     <?php if (isset($_SESSION['success_message'])): ?>
         <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
