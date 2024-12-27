@@ -15,7 +15,8 @@ require_once 'classes/User.php';
 require_once 'classes/Book.php';
 
 $book = new Book("", "", 0, "", "", "");
-$allBooks = $book->getAllBooks();
+$categories = $book->getAllCategories();
+$books = $book->getAllBooks();
 
 session_start();
 
@@ -125,7 +126,6 @@ document.querySelector('#reservationModal > div').addEventListener('click', func
 </script>
 
 <body class="bg-white p-8">
-    
     <!-- Messages de succès/erreur -->
     <?php if (isset($_SESSION['success_message'])): ?>
         <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
@@ -223,48 +223,32 @@ document.querySelector('#reservationModal > div').addEventListener('click', func
         </div>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <?php foreach ($allBooks as $book): ?>
-<<<<<<< HEAD
+    <!-- Barre de recherche -->
+    <div class="mb-6">
+        <input type="text" id="searchInput" placeholder="Rechercher un livre..." 
+               class="w-full p-2 border rounded-lg">
+    </div>
+
+    <!-- Filtre par catégorie -->
+    <div class="mb-6">
+        <select id="categoryFilter" class="w-full p-2 border rounded-lg">
+            <option value="">Toutes les catégories</option>
+            <?php foreach ($categories as $category): ?>
+                <option value="<?php echo $category['id']; ?>">
+                    <?php echo htmlspecialchars($category['name']); ?>
+                </option>
+            <?php endforeach; ?>
+        </select>
+    </div>
+
+    <!-- Container pour les livres -->
+    <div id="booksContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <?php foreach ($books as $book): ?>
             <div class="text-center bg-gray-100 p-4 rounded-lg shadow-md">
             <img alt="The Book of CSS3" class="w-full h-auto rounded-lg" height="300" src="<?php echo $book['cover_image']; ?>" width="200" />                
                 <p name="title" class="mt-4 text-lg font-semibold">
                     <?php echo $book['title']; ?>
                 </p>
-=======
-            <div class="bg-white p-4 rounded-lg shadow-md">
-                <img src="<?php echo htmlspecialchars($book['cover_image']); ?>" 
-                     alt="<?php echo htmlspecialchars($book['title']); ?>" 
-                     class="w-full h-64 object-cover rounded-md mb-4">
-                
-                <h3 class="text-xl font-semibold mb-2"><?php echo htmlspecialchars($book['title']); ?></h3>
-                <p class="text-gray-600 mb-2">Par <?php echo htmlspecialchars($book['author']); ?></p>
-                
-                <!-- Ajout de l'affichage du statut -->
-                <?php
-                $statusClass = '';
-                $statusText = '';
-                switch($book['status']) {
-                    case 'available':
-                        $statusClass = 'bg-green-100 text-green-800';
-                        $statusText = 'Disponible';
-                        break;
-                    case 'borrowed':
-                        $statusClass = 'bg-red-100 text-red-800';
-                        $statusText = 'Emprunté';
-                        break;
-                    case 'reserved':
-                        $statusClass = 'bg-yellow-100 text-yellow-800';
-                        $statusText = 'Réservé';
-                        break;
-                }
-                ?>
-                <div class="mb-4">
-                    <span class="px-2 py-1 rounded-full text-sm <?php echo $statusClass; ?>">
-                        <?php echo $statusText; ?>
-                    </span>
-                </div>
->>>>>>> 8fa1c9fb0b34521df13255a5db9ecf592b795f94
 
                 <p class="text-gray-700 mb-4"><?php echo htmlspecialchars($book['summary']); ?></p>
                 
@@ -305,5 +289,44 @@ document.querySelector('#reservationModal > div').addEventListener('click', func
             </div>
         <?php endforeach; ?>
     </div>
+
+    <script>
+    $(document).ready(function() {
+        // Gestionnaire de recherche
+        let searchTimeout;
+        $('#searchInput').on('input', function() {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+                const searchTerm = $(this).val();
+                if (searchTerm.length > 0) {
+                    $.ajax({
+                        url: 'search_books.php',
+                        method: 'POST',
+                        data: { query: searchTerm },
+                        success: function(response) {
+                            $('#booksContainer').html(response);
+                        }
+                    });
+                } else {
+                    // Si la recherche est vide, réinitialiser le filtre par catégorie
+                    $('#categoryFilter').trigger('change');
+                }
+            }, 300);
+        });
+
+        // Gestionnaire de filtre par catégorie
+        $('#categoryFilter').on('change', function() {
+            const categoryId = $(this).val();
+            $.ajax({
+                url: 'filter_books.php',
+                method: 'POST',
+                data: { category_id: categoryId },
+                success: function(response) {
+                    $('#booksContainer').html(response);
+                }
+            });
+        });
+    });
+    </script>
 </body>
 </html>
