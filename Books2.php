@@ -89,5 +89,28 @@ $allBooks = $book->getAllBooks();
             });
         });
     </script>
+
+<script>
+$(document).ready(function() {
+    // Code existant pour la recherche...
+
+    // Ajout du gestionnaire d'événements pour le filtre par catégorie
+    $('#categoryFilter').on('change', function() {
+        const categoryId = $(this).val();
+        
+        $.ajax({
+            url: 'filter_books.php',
+            type: 'POST',
+            data: { category_id: categoryId },
+            success: function(response) {
+                $('#booksContainer').html(response);
+            },
+            error: function() {
+                console.error("Une erreur s'est produite lors du filtrage");
+            }
+        });
+    });
+});
+</script>
 </body>
 </html>
