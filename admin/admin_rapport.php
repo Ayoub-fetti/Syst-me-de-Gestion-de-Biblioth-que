@@ -19,10 +19,7 @@ $userStats = $user->getUserStatistics();
 $mostBorrowedBooks = $book->getMostBorrowedBooks(5);
 $mostActiveUsers = $user->getMostActiveUsers(5);
 
-// Supprimez ou commentez ces lignes de débogage :
-// echo "<pre>";
-// var_dump($mostBorrowedBooks);
-// echo "</pre>";
+
 ?>
 
 <!DOCTYPE html>
@@ -37,7 +34,7 @@ $mostActiveUsers = $user->getMostActiveUsers(5);
         <h1 class="text-3xl font-bold mb-8">Rapport et Statistiques</h1>
 
         <!-- Statistiques generales -->
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
             <div class="bg-white p-6 rounded-lg shadow">
                 <div class="flex items-center">
                     <div class="p-3 rounded-full bg-blue-500 bg-opacity-10">
@@ -74,17 +71,7 @@ $mostActiveUsers = $user->getMostActiveUsers(5);
                 </div>
             </div>
 
-            <div class="bg-white p-6 rounded-lg shadow">
-                <div class="flex items-center">
-                    <div class="p-3 rounded-full bg-purple-500 bg-opacity-10">
-                        <i class="fas fa-user-check text-purple-500 text-2xl"></i>
-                    </div>
-                    <div class="ml-4">
-                        <p class="text-gray-500">Emprunts actifs</p>
-                        <p class="text-2xl font-semibold"><?php echo $userStats['active_borrowings']; ?></p>
-                    </div>
-                </div>
-            </div>
+
         </div>
 
         <!-- Livres les plus empruntes -->
