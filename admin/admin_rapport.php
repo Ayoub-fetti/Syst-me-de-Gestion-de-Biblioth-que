@@ -18,6 +18,11 @@ $bookStats = $book->getBookStatistics();
 $userStats = $user->getUserStatistics();
 $mostBorrowedBooks = $book->getMostBorrowedBooks(5);
 $mostActiveUsers = $user->getMostActiveUsers(5);
+
+// Supprimez ou commentez ces lignes de débogage :
+// echo "<pre>";
+// var_dump($mostBorrowedBooks);
+// echo "</pre>";
 ?>
 
 <!DOCTYPE html>

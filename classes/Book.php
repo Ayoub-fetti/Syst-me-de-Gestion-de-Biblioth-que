@@ -17,9 +17,9 @@ class Book
 
     public function __construct($title, $author, $category_id, $cover_image, $summary, $status)
     {
-        // Initialiser la connexion  la DB
-        $database = new Database();
-        $this->pdo = $database->connect();
+        // Connexion à la base de données
+        $db = new Database();
+        $this->pdo = $db->connect();
         
         $this->title = $title;
         $this->author = $author;
@@ -214,22 +214,22 @@ class Book
 
     public function getMostBorrowedBooks($limit = 5) {
         try {
-            $stmt = $this->pdo->prepare("
+            $query = "
                 SELECT 
-                    b.id,
                     b.title,
                     b.author,
                     COUNT(br.id) as borrow_count
                 FROM books b
-                LEFT JOIN borrowings br ON b.id = br.book_id
+                INNER JOIN borrowings br ON b.id = br.book_id
                 GROUP BY b.id, b.title, b.author
-                HAVING borrow_count > 0
                 ORDER BY borrow_count DESC
-                LIMIT ?
-            ");
-            $stmt->execute([$limit]);
+                LIMIT " . intval($limit);
+            
+            $stmt = $this->pdo->query($query);
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            
         } catch(PDOException $e) {
+            error_log("Erreur dans getMostBorrowedBooks: " . $e->getMessage());
             return [];
         }
     }
@@ -243,14 +243,6 @@ class Book
             // Total des livres
             $stmt = $this->pdo->query("SELECT COUNT(*) FROM books");
             $stats['total_books'] = $stmt->fetchColumn();
-            
-            // Livres empruntés
-            $stmt = $this->pdo->query("SELECT COUNT(*) FROM books WHERE status = 'borrowed'");
-            $stats['borrowed_books'] = $stmt->fetchColumn();
-            
-            // Livres disponibles
-            $stmt = $this->pdo->query("SELECT COUNT(*) FROM books WHERE status = 'available'");
-            $stats['available_books'] = $stmt->fetchColumn();
             
             // Total des emprunts
             $stmt = $this->pdo->query("SELECT COUNT(*) FROM borrowings");

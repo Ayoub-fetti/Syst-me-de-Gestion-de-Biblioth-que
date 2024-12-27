@@ -265,7 +265,7 @@ public function setId($id) {
 
 public function getMostActiveUsers($limit = 5) {
     try {
-        $stmt = $this->pdo->prepare("
+        $query = "
             SELECT 
                 u.id,
                 u.name,
@@ -276,11 +276,14 @@ public function getMostActiveUsers($limit = 5) {
             GROUP BY u.id, u.name, u.email
             HAVING borrow_count > 0
             ORDER BY borrow_count DESC
-            LIMIT ?
-        ");
-        $stmt->execute([$limit]);
+            LIMIT " .intval($limit);
+
+        $stmt = $this->pdo->query($query);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+
     } catch(PDOException $e) {
+        error_log("Erreur dans getMostActiveUsers: " . $e->getMessage());
         return [];
     }
 }
