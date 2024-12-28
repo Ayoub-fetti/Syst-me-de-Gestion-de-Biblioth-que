@@ -128,5 +128,14 @@ $mostActiveUsers = $user->getMostActiveUsers(5);
             </div>
         </div>
     </div>
+
+    <!-- Ajouter le bouton de téléchargement PDF -->
+    <div class="mt-8 flex justify-center">
+        <a href="generate_pdf_report.php" 
+           class="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg flex items-center">
+            <i class="fas fa-file-pdf mr-2"></i>
+            Télécharger le rapport PDF
+        </a>
+    </div>
 </body>
 </html>
