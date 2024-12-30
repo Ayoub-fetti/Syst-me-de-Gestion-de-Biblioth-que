@@ -79,7 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['userId']) && isset($_
             <i class="fas fa-home"></i>
             </i>
             <span class="ml-3">
-            Page Principale
+            bibliotheque
             </span>
             </a>
         </div>
