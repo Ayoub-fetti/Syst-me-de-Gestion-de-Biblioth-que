@@ -2,10 +2,10 @@
 session_start();
 
 // Vérification de la session utilisateur
-if (!isset($_SESSION['user_id']) || ($_SESSION['user_role'] !== 'authenticated' && $_SESSION['user_role'] !== 'admin')) {
-    header('Location: login.php');
-    exit();
-}
+// if (!isset($_SESSION['user_id']) || ($_SESSION['user_role'] !== 'authenticated' && $_SESSION['user_role'] !== 'admin')) {
+//     header('Location: login.php');
+//     exit();
+// }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -24,7 +24,7 @@ if (!isset($_SESSION['user_id']) || ($_SESSION['user_role'] !== 'authenticated' 
   <header class="bg-black text-white">
    <div class="container mx-auto flex justify-between items-center py-2 px-4">
     <div class="text-2xl font-bold">
-     AMAZON
+     YouBiblio
     </div>
     <div class="flex items-center space-x-2">
      <input class="px-2 py-1 text-black" placeholder="Search category" type="text"/>
@@ -37,28 +37,28 @@ if (!isset($_SESSION['user_id']) || ($_SESSION['user_role'] !== 'authenticated' 
    <nav class="bg-gray-800">
     <div class="container mx-auto flex justify-between items-center py-2 px-4 text-sm">
      <a class="text-white px-2" href="#">
-      HOME
+      ACCEUIL
      </a>
      <a class="text-white px-2" href="#">
-      BOOKLIBRARY
+      LIVRES
      </a>
      <a class="text-white px-2" href="#">
-      AGENTS
+      CATEGORIES
      </a>
      <a class="text-white px-2" href="#">
-      VIRTUEMART
+      EMPRUNTER
      </a>
      <a class="text-white px-2" href="#">
-      OS CCK
+      RESERVER
      </a>
      <a class="text-white px-2" href="#">
-      PAGES
+      CONTACT
      </a>
      <a class="text-white px-2" href="#">
-      CONTACT US
+      SING UP
      </a>
      <span class="text-white px-2">
-      CART EMPTY
+      LOGIN
      </span>
     </div>
    </nav>
@@ -75,15 +75,15 @@ if (!isset($_SESSION['user_id']) || ($_SESSION['user_role'] !== 'authenticated' 
      <p class="text-xl">
       Digital Library Website Template
      </p>
-     <button class="bg-red-600 px-4 py-2 mt-4">
-      MORE INFO
+     <button class="bg-blue-600 rounded-lg px-4 py-2 mt-4">
+      Découvrire nos livres
      </button>
     </div>
    </div>
    <!-- Books Section -->
    <section class="mt-8">
-    <h2 class="text-2xl font-bold mb-4">
-     BOOKS
+    <h2 class="text-2xl font-bold mb-4 center text-center">
+     Livres du mois
     </h2>
     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
      <div class="flex flex-col items-center">
