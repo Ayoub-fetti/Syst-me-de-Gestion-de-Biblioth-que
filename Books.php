@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Liste des livres</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
@@ -244,7 +244,7 @@ document.querySelector('#reservationModal > div').addEventListener('click', func
     <!-- Container pour les livres -->
     <div id="booksContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <?php foreach ($books as $book): ?>
-            <div class="text-center bg-gray-100 p-4 rounded-lg shadow-md w-[450px] h-[600px] mx-auto overflow-y-auto flex flex-col">
+            <div class="text-center bg-gray-100 p-4 rounded-lg shadow-md w-[450px] h-[480px] mx-auto overflow-y-auto flex flex-col">
                 <div class="flex-grow">
                     <img alt="<?php echo htmlspecialchars($book['title']); ?>" 
                          class="w-[250px] h-[250px] rounded-lg object-cover mx-auto" 
@@ -252,7 +252,16 @@ document.querySelector('#reservationModal > div').addEventListener('click', func
                     <p name="title" class="mt-4 text-lg font-semibold">
                         <?php echo $book['title']; ?>
                     </p>
-                    <p class="text-gray-700 mb-4 text-justify"><?php echo htmlspecialchars($book['summary']); ?></p>
+                    <p class="text-gray-600 mt-2">
+                        Par : <?php echo htmlspecialchars($book['author']); ?>
+                    </p>
+                    <p class="text-gray-700 mb-4 text-justify hidden book-description">
+                        <?php echo htmlspecialchars($book['summary']); ?>
+                    </p>
+                    <button type="button" 
+                            class="show-more-btn px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600">
+                        Plus d'infos
+                    </button>
                 </div>
                 <div class="mt-auto">
                     <?php if ($isLoggedIn): ?>
@@ -329,6 +338,13 @@ document.querySelector('#reservationModal > div').addEventListener('click', func
                     $('#booksContainer').html(response);
                 }
             });
+        });
+
+        // Gestionnaire pour le bouton "Plus d'infos"
+        $('.show-more-btn').on('click', function() {
+            const description = $(this).prev('.book-description');
+            description.toggleClass('hidden');
+            $(this).text(description.hasClass('hidden') ? 'Plus d\'infos' : 'Moins d\'infos');
         });
     });
     </script>

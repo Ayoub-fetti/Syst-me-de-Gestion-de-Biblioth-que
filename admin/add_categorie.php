@@ -27,14 +27,67 @@ if (isset($_POST['submit'])) {
 }
 ?>
 
+
+
+
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Ajouter un Livre</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  
+    <title>Rapport et Statistiques</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
-<body>
-    <div class="container mt-4">
+<body class="bg-gray-100 font-sans antialiased">
+    <div class="flex">
+                <!-- Sidebar -->
+            <div class="w-64 bg-blue-900 text-white min-h-screen">
+                <div class="p-4 flex items-center">
+                    <span class="ml-3 text-xl font-semibold">
+                        <span class="text-blue-200">Admin</span> Dashboard
+                    </span>
+                </div>
+                <nav class="mt-5">
+                    <div class="mt-5">
+                        <a class="flex items-center p-3 hover:bg-blue-800 rounded-lg" href="admin_dashboard.php">
+                            <i class="fas fa-home"></i>
+                            <span class="ml-3">Dashboard</span>
+                        </a>
+                    </div>
+                    <div class="mt-5">
+                        <a class="flex items-center p-3 hover:bg-blue-800 rounded-lg" href="admin_books.php">
+                            <i class="fas fa-book"></i>
+                            <span class="ml-3">Gestion des Livres</span>
+                        </a>
+                    </div>
+                    <div class="mt-5">
+                        <a class="flex items-center p-3 hover:bg-blue-800 rounded-lg" href="admin_categories.php">
+                            <i class="fas fa-filter"></i>
+                            <span class="ml-3">Gestion des categories</span>
+                        </a>
+                    </div>
+                    <div class="mt-5">
+                        <a class="flex items-center p-3 bg-blue-800 rounded-lg" href="admin_rapport.php">
+                            <i class="fas fa-file-pdf"></i>
+                            <span class="ml-3">statistiques et rapports</span>
+                        </a>
+                    </div>
+                    <div class="mt-5">
+                        <a href="../logout.php" class="flex items-center p-3 hover:bg-blue-800 rounded-lg text-red-500 hover:text-red-400">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span class="ml-3">Déconnexion</span>
+                        </a>
+                    </div>
+                </nav>
+            </div>
+
+ 
+    </div>
+
+
+
+    <div class="">
         <h2>Ajouter une Categorie</h2>
         
         <?php if ($message): ?>
@@ -52,4 +105,4 @@ if (isset($_POST['submit'])) {
         </form>
     </div>
 </body>
-</html> 
+</html>
