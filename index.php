@@ -99,10 +99,7 @@ session_start();
                 <div class="p-4">
                   <h3 class="font-bold text-lg mb-2"><?php echo htmlspecialchars($book['title']); ?></h3>
                   <p class="text-gray-600 text-sm mb-2"><?php echo htmlspecialchars($book['author']); ?></p>
-                  <a href="book_details.php?id=<?php echo htmlspecialchars($book['id']); ?>" 
-                     class="bg-blue-600 text-white px-4 py-2 rounded block text-center">
-                    Voir plus
-                  </a>
+
                 </div>
               </div>
               <?php
