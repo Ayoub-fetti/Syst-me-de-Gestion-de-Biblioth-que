@@ -244,7 +244,8 @@ document.querySelector('#reservationModal > div').addEventListener('click', func
     <!-- Container pour les livres -->
     <div id="booksContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <?php foreach ($books as $book): ?>
-            <div class="text-center bg-gray-100 p-4 rounded-lg shadow-md w-[450px] h-[480px] mx-auto overflow-y-auto flex flex-col">
+            <div class="book-card text-center bg-gray-100 p-4 rounded-lg shadow-md w-[450px] h-[480px] mx-auto overflow-y-auto flex flex-col"
+                 data-category="<?php echo $book['category_id']; ?>">
                 <div class="flex-grow">
                     <img alt="<?php echo htmlspecialchars($book['title']); ?>" 
                          class="w-[250px] h-[250px] rounded-lg object-cover mx-auto" 
@@ -305,39 +306,30 @@ document.querySelector('#reservationModal > div').addEventListener('click', func
 
     <script>
     $(document).ready(function() {
-        // Gestionnaire de recherche
+        function updateBooks(searchTerm = '', categoryId = '') {
+            const books = $('#booksContainer .book-card');
+            
+            books.each(function() {
+                const title = $(this).find('[name="title"]').text().toLowerCase();
+                const shouldShowBySearch = !searchTerm || title.includes(searchTerm.toLowerCase());
+                const shouldShowByCategory = !categoryId || $(this).data('category') == categoryId;
+                
+                $(this).toggle(shouldShowBySearch && shouldShowByCategory);
+            });
+        }
+
+        // Search handler
         let searchTimeout;
         $('#searchInput').on('input', function() {
             clearTimeout(searchTimeout);
             searchTimeout = setTimeout(() => {
-                const searchTerm = $(this).val();
-                if (searchTerm.length > 0) {
-                    $.ajax({
-                        url: 'search_books.php',
-                        method: 'POST',
-                        data: { query: searchTerm },
-                        success: function(response) {
-                            $('#booksContainer').html(response);
-                        }
-                    });
-                } else {
-                    // Si la recherche est vide, réinitialiser le filtre par catégorie
-                    $('#categoryFilter').trigger('change');
-                }
+                updateBooks($(this).val(), $('#categoryFilter').val());
             }, 300);
         });
 
-        // Gestionnaire de filtre par catégorie
+        // Category filter handler
         $('#categoryFilter').on('change', function() {
-            const categoryId = $(this).val();
-            $.ajax({
-                url: 'filter_books.php',
-                method: 'POST',
-                data: { category_id: categoryId },
-                success: function(response) {
-                    $('#booksContainer').html(response);
-                }
-            });
+            updateBooks($('#searchInput').val(), $(this).val());
         });
 
         // Gestionnaire pour le bouton "Plus d'infos"
