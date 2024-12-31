@@ -68,11 +68,11 @@ session_start();
       ONLINE BOOK LIBRARY
      </h1>
      <p class="text-xl">
-      Digital Library Website Template
+      La meilleure plateforme pour emprunter des livres
      </p>
-     <button class="bg-blue-600 rounded-lg px-4 py-2 mt-4">
+     <a href="Books.php" class="bg-blue-600 rounded-lg px-4 py-2 mt-4">
       Découvrire nos livres
-     </button>
+</a>
     </div>
    </div>
    <!-- Books Section -->
@@ -80,59 +80,44 @@ session_start();
     <h2 class="text-2xl font-bold mb-4 center text-center">
      Livres du mois
     </h2>
-    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-     <div class="flex flex-col items-center">
-      <img alt="No image available" class="w-full h-48 object-cover" height="200" src="https://storage.googleapis.com/a1aa/image/K1HwUHkEYlKDF50ZWfTizNWUfD90RBuIUfL6tWHKaV5fLu5PB.jpg" width="150"/>
-      <p class="text-center mt-2">
-       No image available
-      </p>
-     </div>
-     <div class="flex flex-col items-center">
-      <img alt="Book cover of 'Web Designers Idea Book'" class="w-full h-48 object-cover" height="200" src="https://storage.googleapis.com/a1aa/image/g3ST2rij6Y7JKN21sG9NxL4eALL9hKYd6NJWemmrgLv6ibenA.jpg" width="150"/>
-      <p class="text-center mt-2">
-       Web Designers Idea Book
-       <br/>
-       Patrick McNeil
-      </p>
-     </div>
-     <div class="flex flex-col items-center">
-      <img alt="Book cover of 'The Survivor'" class="w-full h-48 object-cover" height="200" src="https://storage.googleapis.com/a1aa/image/T7ZVd6KpirprC9L2QmMWHKbJ0cZnekeuReey28CJqSZSLu5PB.jpg" width="150"/>
-      <p class="text-center mt-2">
-       The Survivor (A Mitch Rapp Novel)
-       <br/>
-       Vince Flynn, Kyle Mills
-      </p>
-     </div>
-     <div class="flex flex-col items-center">
-      <img alt="Book cover of 'The Hobbit and The Lord of the Rings'" class="w-full h-48 object-cover" height="200" src="https://storage.googleapis.com/a1aa/image/Xda6wPJQDup9GZ3fFvqB4V2iuuYlCM7BefjTej3ZURQ2Lu5PB.jpg" width="150"/>
-      <p class="text-center mt-2">
-       The Hobbit and The Lord of the Rings
-       <br/>
-       J.R.R. Tolkien
-      </p>
-     </div>
-     <div class="flex flex-col items-center">
-      <img alt="Book cover of 'The Boys in the Boat'" class="w-full h-48 object-cover" height="200" src="https://storage.googleapis.com/a1aa/image/2AfG7LTrwlS0OyyEKVluyYP9oHrub0XNgUCZ0FuSlQf2ibenA.jpg" width="150"/>
-      <p class="text-center mt-2">
-       The Boys in the Boat
-       <br/>
-       Daniel James Brown
-      </p>
-     </div>
-     <div class="flex flex-col items-center">
-      <img alt="Book cover of 'The Book of CSS3'" class="w-full h-48 object-cover" height="200" src="https://storage.googleapis.com/a1aa/image/Vjqh7gslfx02QqLjBbVHRF7Iez7XO5xGpwfrhirviox3F38nA.jpg" width="150"/>
-      <p class="text-center mt-2">
-       The Book of CSS3
-       <br/>
-       Peter Gasston
-      </p>
-     </div>
-     <div class="flex flex-col items-center">
-      <img alt="Top Books Banner" class="w-full h-48 object-cover" height="200" src="https://storage.googleapis.com/a1aa/image/8fGf86RXieCn2puNT3DoCZ04p3uNFP82yLFptfVvujtJLu5PB.jpg" width="150"/>
-      <p class="text-center mt-2">
-       Top Books Banner
-      </p>
-     </div>
+    
+    <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
+      <?php
+        // Connexion à la base de données avec PDO
+        require_once 'connection.php';
+        $database = new Database();
+        $conn = $database->connect();
+        
+        try {
+            // Sélectionner 5 livres aléatoires
+            $query = "SELECT * FROM books ORDER BY RAND() LIMIT 5";
+            $stmt = $conn->prepare($query);
+            $stmt->execute();
+            
+            while($book = $stmt->fetch(PDO::FETCH_ASSOC)) {
+              ?>
+              <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+                <img src="<?php echo htmlspecialchars($book['cover_image']); ?>" 
+                     alt="<?php echo htmlspecialchars($book['title']); ?>" 
+                     class="w-full h-48 object-cover">
+                <div class="p-4">
+                  <h3 class="font-bold text-lg mb-2"><?php echo htmlspecialchars($book['title']); ?></h3>
+                  <p class="text-gray-600 text-sm mb-2"><?php echo htmlspecialchars($book['author']); ?></p>
+                  <a href="book_details.php?id=<?php echo htmlspecialchars($book['id']); ?>" 
+                     class="bg-blue-600 text-white px-4 py-2 rounded block text-center">
+                    Voir plus
+                  </a>
+                </div>
+              </div>
+              <?php
+            }
+        } catch(PDOException $e) {
+            echo "Erreur : " . $e->getMessage();
+        }
+        
+        // Fermer la connexion
+        $conn = null;
+      ?>
     </div>
    </section>
   </main>
