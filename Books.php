@@ -339,6 +339,8 @@ document.querySelector('#reservationModal > div').addEventListener('click', func
             $(this).text(description.hasClass('hidden') ? 'Plus d\'infos' : 'Moins d\'infos');
         });
     });
+
+    // final
     </script>
 </body>
 </html>
