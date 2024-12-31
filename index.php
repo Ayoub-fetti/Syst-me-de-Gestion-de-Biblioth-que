@@ -1,11 +1,6 @@
 <?php
 session_start();
 
-// Vérification de la session utilisateur
-// if (!isset($_SESSION['user_id']) || ($_SESSION['user_role'] !== 'authenticated' && $_SESSION['user_role'] !== 'admin')) {
-//     header('Location: login.php');
-//     exit();
-// }
 ?>
 <!DOCTYPE html>
 <html lang="en">

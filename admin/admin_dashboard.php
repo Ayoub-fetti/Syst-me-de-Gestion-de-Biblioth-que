@@ -68,49 +68,63 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['userId']) && isset($_
    <!-- Sidebar -->
    <div class="w-64 bg-blue-900 text-white min-h-screen">
     <div class="p-4 flex items-center">
-     <img alt="Logo" class="w-10 h-10 rounded-full" src="<?php echo BASE_URL; ?>/public/images/logo.jpg"/>
      <span class="ml-3 text-xl font-semibold">
-      Admin Dashbord
+      <span class="text-blue-200">Admin</span> Dashbord
      </span>
     </div>
     <nav class="mt-5">
-     <a class="flex items-center p-3 bg-blue-800 rounded-lg" href="<?php echo BASE_URL; ?>/views/dashboard/admin.php">
-      <i class="fas fa-tachometer-alt">
-      </i>
-      <span class="ml-3">
-       Dashboard
-      </span>
-     </a>
+        <div class="mt-5">
+            <a class="flex items-center p-3 hover:bg-blue-800 rounded-lg" href="<?php echo BASE_URL; ?>../index.php">
+            <!-- <i class="fas fa-book"></i> -->
+            <i class="fas fa-home"></i>
+            </i>
+            <span class="ml-3">
+            bibliotheque
+            </span>
+            </a>
+        </div>
+        
      <div class="mt-5">
   
       <a class="flex items-center p-3 hover:bg-blue-800 rounded-lg" href="<?php echo BASE_URL; ?>/admin/admin_books.php">
         
-       <i class="fas fa-cube">
+       <i class="fas fa-book"></i>
        </i>
        <span class="ml-3">
-        Admin Books
+        Gestion des Livres
        </span>
       </a>
      </div>
      <div class="mt-5">
       <a class="flex items-center p-3 hover:bg-blue-800 rounded-lg" href="<?php echo BASE_URL; ?>/admin/admin_categories.php">
-       <i class="fas fa-edit">
+       <!-- <i class="fas fa-edit"> -->
+       <i class="fas fa-filter"></i>
        </i>
        <span class="ml-3">
-        Admin Categories
+        Gestion des categories 
+       </span>
+      </a>
+   
+     </div>
+     <div class="mt-5">
+      <a class="flex items-center p-3 hover:bg-blue-800 rounded-lg" href="<?php echo BASE_URL; ?>/admin/admin_rapport.php">
+      <i class="fas fa-file-pdf"></i>
+       </i>
+       <span class="ml-3">
+        statistiques et rapports 
        </span>
       </a>
    
      </div>
   
-     <div class="mt-auto">
+        <div class="mt-5">
         <a href="../logout.php" class="flex items-center p-3 hover:bg-blue-800 rounded-lg text-red-500 hover:text-red-400">
             <i class="fas fa-sign-out-alt"></i>
             <span class="ml-3">
                 Déconnexion
             </span>
         </a>
-    </div>
+        </div>
     </nav>
    </div>
    <!-- Main Content -->
@@ -294,64 +308,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['userId']) && isset($_
             </tbody>
         </table>
     </div>
-    </div>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-     <div class="bg-white p-6 rounded-lg shadow">
-      <h2 class="text-xl font-semibold mb-4">
-       Upcoming Event
-      </h2>
-      <div class="flex items-center justify-between">
-       <div>
-        <p class="text-3xl font-semibold">
-         45
-        </p>
-        <p class="text-gray-500">
-         Competitors
-        </p>
-       </div>
-       <div class="text-purple-500 text-4xl">
-        <i class="fas fa-hand-peace">
-        </i>
-       </div>
-      </div>
-      <div class="mt-4">
-       <p class="text-gray-500">
-        You can participate in event
-       </p>
-       <div class="h-2 bg-purple-500 rounded-full mt-2" style="width: 34%;">
-       </div>
-      </div>
-     </div>
-     <div class="bg-white p-6 rounded-lg shadow">
-      <div class="flex items-center justify-between mb-4">
-       <div>
-        <p class="text-3xl font-semibold">
-         235
-        </p>
-        <p class="text-gray-500">
-         Total Ideas
-        </p>
-       </div>
-       <div class="text-green-500 text-4xl">
-        <i class="fas fa-lightbulb">
-        </i>
-       </div>
-      </div>
-      <div class="flex items-center justify-between">
-       <div>
-        <p class="text-3xl font-semibold">
-         26
-        </p>
-        <p class="text-gray-500">
-         Total Locations
-        </p>
-       </div>
-       <div class="text-blue-500 text-4xl">
-        <i class="fas fa-map-marker-alt">
-        </i>
-       </div>
-      </div>
-     </div>
     </div>
    </div>
   </div>

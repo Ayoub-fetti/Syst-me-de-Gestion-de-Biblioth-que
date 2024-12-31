@@ -244,10 +244,8 @@ document.querySelector('#reservationModal > div').addEventListener('click', func
     <!-- Container pour les livres -->
     <div id="booksContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <?php foreach ($books as $book): ?>
-            <div class="book-card text-center bg-gray-100 p-4 rounded-lg shadow-md" 
-                 data-title="<?php echo strtolower($book['title']); ?>"
-                 data-category="<?php echo $book['category_id']; ?>">
-                <img alt="The Book of CSS3" class="w-full h-auto rounded-lg" height="300" src="<?php echo $book['cover_image']; ?>" width="200" />                
+            <div class="text-center bg-gray-100 p-4 rounded-lg shadow-md">
+            <img alt="The Book of CSS3" class="w-full h-auto rounded-lg" height="300" src="<?php echo $book['cover_image']; ?>" width="200" />                
                 <p name="title" class="mt-4 text-lg font-semibold">
                     <?php echo $book['title']; ?>
                 </p>
@@ -299,26 +297,32 @@ document.querySelector('#reservationModal > div').addEventListener('click', func
         $('#searchInput').on('input', function() {
             clearTimeout(searchTimeout);
             searchTimeout = setTimeout(() => {
-                const searchTerm = $(this).val().toLowerCase();
-                $('.book-card').each(function() {
-                    const title = $(this).data('title');
-                    if (title.includes(searchTerm)) {
-                        $(this).show();
-                    } else {
-                        $(this).hide();
-                    }
-                });
+                const searchTerm = $(this).val();
+                if (searchTerm.length > 0) {
+                    $.ajax({
+                        url: 'search_books.php',
+                        method: 'POST',
+                        data: { query: searchTerm },
+                        success: function(response) {
+                            $('#booksContainer').html(response);
+                        }
+                    });
+                } else {
+                    // Si la recherche est vide, réinitialiser le filtre par catégorie
+                    $('#categoryFilter').trigger('change');
+                }
             }, 300);
         });
 
         // Gestionnaire de filtre par catégorie
         $('#categoryFilter').on('change', function() {
             const categoryId = $(this).val();
-            $('.book-card').each(function() {
-                if (!categoryId || $(this).data('category') == categoryId) {
-                    $(this).show();
-                } else {
-                    $(this).hide();
+            $.ajax({
+                url: 'filter_books.php',
+                method: 'POST',
+                data: { category_id: categoryId },
+                success: function(response) {
+                    $('#booksContainer').html(response);
                 }
             });
         });

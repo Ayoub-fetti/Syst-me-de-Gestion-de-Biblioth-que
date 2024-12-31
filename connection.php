@@ -5,7 +5,7 @@
 if (!class_exists('Database')) {
     class Database {
         private $host = 'localhost';   
-        private $dbname = 'Bibliotheque';   // Nom de la base de données
+        private $dbname = 'bibliotheque';   // Nom de la base de données
         private $username = 'root';    // Nom d'utilisateur pour la base de données
         private $password = '';        // Mot de passe pour la base de données
         private $conn;
