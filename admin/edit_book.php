@@ -57,12 +57,14 @@ if (isset($_POST['submit'])) {
         $ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
         
         if (in_array($ext, $allowed)) {
-            if (!empty($bookData['cover_image']) && file_exists($bookData['cover_image'])) {
-                unlink($bookData['cover_image']);
+            // Supprimer l'ancienne image si elle existe
+            if (!empty($bookData['cover_image']) && file_exists('../' . $bookData['cover_image'])) {
+                unlink('../' . $bookData['cover_image']);
             }
             
+            // Modifier le chemin de sauvegarde pour inclure le dossier parent
             $cover_image = 'covers/' . uniqid() . '.' . $ext;
-            move_uploaded_file($_FILES['cover_image']['tmp_name'], $cover_image);
+            move_uploaded_file($_FILES['cover_image']['tmp_name'], '../' . $cover_image);
             $book->setCoverImage($cover_image);
         }
     }
@@ -83,32 +85,38 @@ if (isset($_POST['submit'])) {
 <html>
 <head>
     <title>Modifier un Livre</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <div class="container mt-4">
-        <h2>Modifier un Livre</h2>
+<body class="bg-white p-8">
+    <div class="container mx-auto">
+        <h2 class="text-3xl font-bold mb-8">Modifier un Livre</h2>
         
         <?php if ($message): ?>
-            <div class="alert alert-success"><?php echo $message; ?></div>
+            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">
+                <?php echo $message; ?>
+            </div>
         <?php endif; ?>
 
-        <form method="POST" enctype="multipart/form-data">
-            <div class="mb-3">
-                <label class="form-label">Titre</label>
-                <input type="text" name="title" class="form-control" 
+        <form method="POST" enctype="multipart/form-data" class="max-w-2xl">
+            <div class="mb-6">
+                <label class="block text-gray-700 text-sm font-bold mb-2">Titre</label>
+                <input type="text" name="title" 
+                       class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                        value="<?php echo htmlspecialchars($bookData['title'] ?? ''); ?>" required>
             </div>
             
-            <div class="mb-3">
-                <label class="form-label">Auteur</label>
-                <input type="text" name="author" class="form-control" 
+            <div class="mb-6">
+                <label class="block text-gray-700 text-sm font-bold mb-2">Auteur</label>
+                <input type="text" name="author" 
+                       class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                        value="<?php echo htmlspecialchars($bookData['author'] ?? ''); ?>" required>
             </div>
             
-            <div class="mb-3">
-                <label class="form-label">Catégorie</label>
-                <select name="category_id" class="form-control" required>
+            <div class="mb-6">
+                <label class="block text-gray-700 text-sm font-bold mb-2">Catégorie</label>
+                <select name="category_id" 
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
+                        required>
                     <option value="">Sélectionner une catégorie</option>
                     <?php foreach ($categories as $category): ?>
                         <option value="<?php echo $category['id']; ?>" 
@@ -119,30 +127,43 @@ if (isset($_POST['submit'])) {
                 </select>
             </div>
             
-            <div class="mb-3">
-                <label class="form-label">Image de couverture</label>
+            <div class="mb-6">
+                <label class="block text-gray-700 text-sm font-bold mb-2">Image de couverture</label>
                 <?php if (!empty($bookData['cover_image'])): ?>
-                    <img src="<?php echo htmlspecialchars($bookData['cover_image']); ?>" 
-                         style="max-width: 200px;" class="d-block mb-2">
+                    <img src="<?php echo '../' . htmlspecialchars($bookData['cover_image']); ?>" 
+                         class="w-[250px] h-[250px] rounded-lg object-cover mb-4">
                 <?php endif; ?>
-                <input type="file" name="cover_image" class="form-control">
+                <input type="file" name="cover_image" 
+                       class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
             </div>
             
-            <div class="mb-3">
-                <label class="form-label">Résumé</label>
-                <textarea name="summary" class="form-control" rows="3"><?php echo htmlspecialchars($bookData['summary'] ?? ''); ?></textarea>
+            <div class="mb-6">
+                <label class="block text-gray-700 text-sm font-bold mb-2">Résumé</label>
+                <textarea name="summary" 
+                          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline text-justify" 
+                          rows="5"><?php echo htmlspecialchars($bookData['summary'] ?? ''); ?></textarea>
             </div>
             
-            <div class="mb-3">
-                <label class="form-label">Status</label>
-                <select name="status" class="form-control" required>
+            <div class="mb-6">
+                <label class="block text-gray-700 text-sm font-bold mb-2">Status</label>
+                <select name="status" 
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
+                        required>
                     <option value="available" <?php echo ($bookData['status'] == 'available') ? 'selected' : ''; ?>>Disponible</option>
                     <option value="borrowed" <?php echo ($bookData['status'] == 'borrowed') ? 'selected' : ''; ?>>Emprunté</option>
                 </select>
             </div>
 
-            <button type="submit" name="submit" class="btn btn-primary">Modifier</button>
-            <a href="admin_books.php" class="btn btn-secondary">Retour</a>
+            <div class="flex gap-4">
+                <button type="submit" name="submit" 
+                        class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
+                    Modifier
+                </button>
+                <a href="admin_books.php" 
+                   class="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600">
+                    Retour
+                </a>
+            </div>
         </form>
     </div>
 </body>

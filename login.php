@@ -63,9 +63,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="<?php echo BASE_URL; ?>/public/index.php">
+    <style>
+        body {
+            background-image: url('https://images.pexels.com/photos/1370298/pexels-photo-1370298.jpeg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            min-height: 100vh;
+        }
+        
+        .container {
+            background-color: rgba(255, 255, 255, 0.9); /* Fond blanc semi-transparent */
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+    </style>
 </head>
 <body class="flex items-center justify-center min-h-screen bg-gray-100">
-    <div class="w-full max-w-sm p-6 bg-white rounded-lg shadow-md">
+    <div class="container max-w-md mx-auto mt-10">
         <?php if (!empty($errors)): ?>
             <div class="mb-4 p-3 bg-red-100 text-red-700 rounded">
                 <?php foreach($errors as $error): ?>
