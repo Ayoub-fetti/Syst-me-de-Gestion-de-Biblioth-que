@@ -130,7 +130,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['userId']) && isset($_
    <!-- Main Content -->
    <div class="flex-1 p-6">
     <div class="flex justify-between items-center mb-6">
-     <h1 class="text-2xl font-semibold">
+     <h1 class="text-2xl font-semibold text-blue-500">
       Dashboard
      </h1>
     </div>
@@ -141,15 +141,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['userId']) && isset($_
         <p class="text-gray-600">
          Total des utilisateurs
         </p>
-        <p class="text-2xl font-semibold text-green-500">
+        <p class="text-2xl font-semibold text-blue-500">
          <?php echo $userCount; ?>
         </p>
        </div>
-       <i class="fas fa-user text-green-500"></i>
-       </i>
+       <i class="fas fa-user text-blue-500"></i>
       </div>
       <div class="mt-4">
-       <div class="h-2 bg-green-500 rounded-full" style="width: 100%;">
+       <div class="h-2 bg-blue-500 rounded-full" style="width: 100%;">
        </div>
       </div>
      </div>
@@ -157,12 +156,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['userId']) && isset($_
       <div class="flex items-center justify-between">
        <div>
         <p class="text-gray-600">Total des livres</p>
-        <p class="text-2xl font-semibold text-green-500"><?php echo $totalBooksCount; ?></p>
+        <p class="text-2xl font-semibold text-blue-500">
+            <?php echo $totalBooksCount; ?></p>
        </div>
-       <i class="fas fa-books text-green-500"></i>
+       <i class="fas fa-university text-blue-500"></i>
+    
       </div>
       <div class="mt-4">
-       <div class="h-2 bg-green-500 rounded-full" style="width: 100%;"></div>
+       <div class="h-2 bg-blue-500 rounded-full" style="width: 100%;"></div>
       </div>
      </div>
      <div class="bg-white p-4 rounded-lg shadow">
@@ -171,16 +172,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['userId']) && isset($_
         <p class="text-gray-600">
          Categories
         </p>
-        <p class="text-2xl font-semibold text-green-500">
+        <p class="text-2xl font-semibold text-blue-500">
          <?php echo $categoryCount; ?>
         </p>
        </div>
       
-       <i class="fas fa-bookmark text-green-500"></i>
+       <i class="fas fa-bookmark text-blue-500"></i>
        </i>
       </div>
       <div class="mt-4">
-       <div class="h-2 bg-green-500 rounded-full" style="width: 100%;">
+       <div class="h-2 bg-blue-500 rounded-full" style="width: 100%;">
        </div>
       </div>
      </div>
@@ -190,16 +191,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['userId']) && isset($_
         <p class="text-gray-600">
          Livres réservé
         </p>
-        <p class="text-2xl font-semibold text-green-500">
+        <p class="text-2xl font-semibold text-blue-500">
          <?php echo $reservedCount; ?>
         </p>
        </div>
      
-       <i class="fas fa-book text-green-500"></i>
+       <i class="fas fa-book text-blue-500"></i>
        </i>
       </div>
       <div class="mt-4">
-       <div class="h-2 bg-green-500 rounded-full" style="width: 100%;">
+       <div class="h-2 bg-blue-500 rounded-full" style="width: 100%;">
        </div>
       </div>
      </div>
@@ -209,16 +210,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['userId']) && isset($_
         <p class="text-gray-600">
          Livres emprientés
         </p>
-        <p class="text-2xl font-semibold text-green-500">
+        <p class="text-2xl font-semibold text-blue-500">
          <?php echo $borrowedCount; ?>
         </p>
        </div>
        
-       <i class="fas fa-book-open text-green-500"></i>
+       <i class="fas fa-book-open text-blue-500"></i>
        </i>
       </div>
       <div class="mt-4">
-       <div class="h-2 bg-green-500 rounded-full" style="width: 100%;">
+       <div class="h-2 bg-blue-500 rounded-full" style="width: 100%;">
        </div>
       </div>
      </div>
@@ -318,7 +319,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['userId']) && isset($_
   <?php
   // Ajouter au début de la page, après la balise body, pour afficher les messages
   if (isset($_SESSION['success_message'])): ?>
-      <div class="fixed top-4 right-4 px-4 py-2 bg-green-500 text-white rounded-lg shadow-lg">
+      <div class="fixed top-4 right-4 px-4 py-2 bg-blue-500 text-white rounded-lg shadow-lg">
           <?php 
           echo $_SESSION['success_message'];
           unset($_SESSION['success_message']);

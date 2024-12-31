@@ -244,48 +244,52 @@ document.querySelector('#reservationModal > div').addEventListener('click', func
     <!-- Container pour les livres -->
     <div id="booksContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <?php foreach ($books as $book): ?>
-            <div class="text-center bg-gray-100 p-4 rounded-lg shadow-md">
-            <img alt="The Book of CSS3" class="w-full h-auto rounded-lg" height="300" src="<?php echo $book['cover_image']; ?>" width="200" />                
-                <p name="title" class="mt-4 text-lg font-semibold">
-                    <?php echo $book['title']; ?>
-                </p>
-
-                <p class="text-gray-700 mb-4"><?php echo htmlspecialchars($book['summary']); ?></p>
-                
-                <?php if ($isLoggedIn): ?>
-                    <?php if ($book['status'] == 'available'): ?>
-                        <button type="button" 
-                                onclick="openBorrowModal('<?php echo $book['id']; ?>', '<?php echo htmlspecialchars($book['title']); ?>')"
-                                class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
-                            Emprunter maintenant!
-                        </button>
+            <div class="text-center bg-gray-100 p-4 rounded-lg shadow-md w-[450px] h-[600px] mx-auto overflow-y-auto flex flex-col">
+                <div class="flex-grow">
+                    <img alt="<?php echo htmlspecialchars($book['title']); ?>" 
+                         class="w-[250px] h-[250px] rounded-lg object-cover mx-auto" 
+                         src="<?php echo $book['cover_image']; ?>" />                
+                    <p name="title" class="mt-4 text-lg font-semibold">
+                        <?php echo $book['title']; ?>
+                    </p>
+                    <p class="text-gray-700 mb-4 text-justify"><?php echo htmlspecialchars($book['summary']); ?></p>
+                </div>
+                <div class="mt-auto">
+                    <?php if ($isLoggedIn): ?>
+                        <?php if ($book['status'] == 'available'): ?>
+                            <button type="button" 
+                                    onclick="openBorrowModal('<?php echo $book['id']; ?>', '<?php echo htmlspecialchars($book['title']); ?>')"
+                                    class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
+                                Emprunter maintenant!
+                            </button>
+                        <?php else: ?>
+                            <?php
+                            $stmt = $pdo->prepare("SELECT due_date FROM borrowings WHERE book_id = ? AND return_date IS NULL ORDER BY due_date DESC LIMIT 1");
+                            $stmt->execute([$book['id']]);
+                            $currentBorrowing = $stmt->fetch();
+                            $dueDate = $currentBorrowing ? $currentBorrowing['due_date'] : date('Y-m-d');
+                            ?>
+                            <div class="text-sm text-gray-600 mb-2">
+                                Date de retour prévue : <?php echo date('d/m/Y', strtotime($dueDate)); ?>
+                            </div>
+                            <button type="button" 
+                                    onclick="openReservationModal(
+                                        '<?php echo $book['id']; ?>', 
+                                        '<?php echo htmlspecialchars($book['title']); ?>', 
+                                        '<?php echo $dueDate; ?>'
+                                    )"
+                                    class="mt-2 px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600">
+                                Réserver
+                            </button>
+                        <?php endif; ?>
                     <?php else: ?>
-                        <?php
-                        $stmt = $pdo->prepare("SELECT due_date FROM borrowings WHERE book_id = ? AND return_date IS NULL ORDER BY due_date DESC LIMIT 1");
-                        $stmt->execute([$book['id']]);
-                        $currentBorrowing = $stmt->fetch();
-                        $dueDate = $currentBorrowing ? $currentBorrowing['due_date'] : date('Y-m-d');
-                        ?>
-                        <div class="text-sm text-gray-600 mb-2">
-                            Date de retour prévue : <?php echo date('d/m/Y', strtotime($dueDate)); ?>
-                        </div>
                         <button type="button" 
-                                onclick="openReservationModal(
-                                    '<?php echo $book['id']; ?>', 
-                                    '<?php echo htmlspecialchars($book['title']); ?>', 
-                                    '<?php echo $dueDate; ?>'
-                                )"
-                                class="mt-2 px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600">
-                            Réserver
+                                onclick="return redirectToLogin()"
+                                class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
+                            Se connecter pour emprunter
                         </button>
                     <?php endif; ?>
-                <?php else: ?>
-                    <button type="button" 
-                            onclick="return redirectToLogin()"
-                            class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
-                        Se connecter pour emprunter
-                    </button>
-                <?php endif; ?>
+                </div>
             </div>
         <?php endforeach; ?>
     </div>
