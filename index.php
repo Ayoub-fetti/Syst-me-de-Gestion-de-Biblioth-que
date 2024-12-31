@@ -31,30 +31,30 @@ session_start();
    </div>
    <nav class="bg-gray-800">
     <div class="container mx-auto flex justify-between items-center py-2 px-4 text-sm">
-     <a class="text-white px-2" href="#">
+     <a class="text-white px-2" href="index.php">
       ACCEUIL
      </a>
-     <a class="text-white px-2" href="#">
+     <a class="text-white px-2" href="Books.php">
       LIVRES
      </a>
-     <a class="text-white px-2" href="#">
+     <a class="text-white px-2" href="Books.php">
       CATEGORIES
      </a>
-     <a class="text-white px-2" href="#">
+     <a class="text-white px-2" href="Books.php">
       EMPRUNTER
      </a>
-     <a class="text-white px-2" href="#">
+     <a class="text-white px-2" href="Books.php">
       RESERVER
      </a>
-     <a class="text-white px-2" href="#">
+     <a class="text-white px-2" href="Contact.php">
       CONTACT
      </a>
-     <a class="text-white px-2" href="#">
+     <a class="text-white px-2" href="register.php">
       SING UP
      </a>
-     <span class="text-white px-2">
-      LOGIN
-     </span>
+     <a class="text-white px-2" href="login.php">
+    LOGIN 
+     </a>
     </div>
    </nav>
   </header>
