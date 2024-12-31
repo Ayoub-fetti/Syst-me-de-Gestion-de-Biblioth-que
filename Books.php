@@ -8,6 +8,42 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
+<body class="m-0 p-0">
+<header class="bg-black text-white w-full">
+   <div class="container mx-auto flex justify-between items-center py-2 px-4">
+    <div class="text-2xl font-bold">
+     YouBiblio
+    </div>
+   </div>
+   <nav class="bg-gray-800">
+    <div class="container mx-auto flex justify-between items-center py-2 px-4 text-sm">
+     <a class="text-white hover:text-blue-600 px-2" href="index.php">
+      ACCEUIL
+     </a>
+     <a class="text-white hover:text-blue-600 px-2" href="Books.php">
+      LIVRES
+     </a>
+     <a class="text-white hover:text-blue-600 px-2" href="Books.php">
+      CATEGORIES
+     </a>
+     <a class="text-white hover:text-blue-600 px-2" href="Books.php">
+      EMPRUNTER
+     </a>
+     <a class="text-white hover:text-blue-600 px-2" href="Books.php">
+      RESERVER
+     </a>
+     <a class="text-white hover:text-blue-600 px-2" href="Contact.php">
+      CONTACT
+     </a>
+     <a class="text-white hover:text-blue-600 px-2" href="register.php">
+      SING UP
+     </a>
+     <a class="text-white hover:text-blue-600 px-2" href="login.php">
+      LOGIN 
+     </a>
+    </div>
+   </nav>
+</header>
 
 <?php
 require_once 'connection.php';
@@ -125,7 +161,8 @@ document.querySelector('#reservationModal > div').addEventListener('click', func
 });
 </script>
 
-<body class="bg-white p-8">
+
+<div class="bg-white p-8">
     <!-- Messages de succès/erreur -->
     <?php if (isset($_SESSION['success_message'])): ?>
         <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
@@ -342,5 +379,6 @@ document.querySelector('#reservationModal > div').addEventListener('click', func
 
     // final
     </script>
+</div>
 </body>
 </html>
