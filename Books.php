@@ -4,9 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Online Book Library</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
 </head>
 
 <?php
@@ -125,32 +126,119 @@ document.querySelector('#reservationModal > div').addEventListener('click', func
 });
 </script>
 
-<body class="bg-white p-8">
-    <!-- Messages de succès/erreur -->
-    <?php if (isset($_SESSION['success_message'])): ?>
-        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
-            <span class="block sm:inline"><?php echo $_SESSION['success_message']; ?></span>
-            <?php unset($_SESSION['success_message']); ?>
+<body class="bg-white text-gray-800">
+    <!-- Header -->
+    <header class="bg-black text-white">
+        <div class="container mx-auto flex justify-between items-center py-2 px-4">
+            <div class="text-2xl font-bold">
+                YouBiblio
+            </div>
+            <div class="flex items-center space-x-2">
+                <input class="px-2 py-1 text-black" placeholder="Search category" type="text"/>
+                <button class="bg-red-600 px-4 py-1">
+                    SEARCH
+                </button>
+            </div>
         </div>
-    <?php endif; ?>
+        <nav class="bg-gray-800">
+            <div class="container mx-auto flex justify-between items-center py-2 px-4 text-sm">
+                <a class="text-white px-2" href="index.php">ACCEUIL</a>
+                <a class="text-white px-2" href="Books.php">LIVRES</a>
+                <a class="text-white px-2" href="Books.php">CATEGORIES</a>
+                <a class="text-white px-2" href="Books.php">EMPRUNTER</a>
+                <a class="text-white px-2" href="Books.php">RESERVER</a>
+                <a class="text-white px-2" href="Contact.php">CONTACT</a>
+                <a class="text-white px-2" href="register.php">SING UP</a>
+                <a class="text-white px-2" href="login.php">LOGIN</a>
+            </div>
+        </nav>
+    </header>
 
-    <?php if (isset($_SESSION['error_message'])): ?>
-        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-            <span class="block sm:inline"><?php echo $_SESSION['error_message']; ?></span>
-            <?php unset($_SESSION['error_message']); ?>
+    <!-- Main Content -->
+    <main class="container mx-auto my-4">
+        <!-- Messages de succès/erreur -->
+        <?php if (isset($_SESSION['success_message'])): ?>
+            <div class="container mx-auto px-4">
+                <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+                    <span class="block sm:inline"><?php echo $_SESSION['success_message']; ?></span>
+                    <?php unset($_SESSION['success_message']); ?>
+                </div>
+            </div>
+        <?php endif; ?>
+
+        <!-- Search and Filter Section -->
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row gap-4 mb-6">
+                <div class="md:w-1/2">
+                    <input type="text" 
+                           id="searchInput" 
+                           placeholder="Rechercher un livre..." 
+                           class="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div class="md:w-1/2">
+                    <select id="categoryFilter" 
+                            class="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="">Toutes les catégories</option>
+                        <?php foreach ($categories as $category): ?>
+                            <option value="<?php echo $category['id']; ?>">
+                                <?php echo htmlspecialchars($category['name']); ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Books Grid -->
+            <div id="booksContainer" class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                <?php foreach ($books as $book): ?>
+                    <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+                        <img src="<?php echo $book['cover_image']; ?>" 
+                             alt="<?php echo htmlspecialchars($book['title']); ?>" 
+                             class="w-full h-48 object-cover">
+                        <div class="p-4">
+                            <h3 class="font-bold text-lg mb-2"><?php echo htmlspecialchars($book['title']); ?></h3>
+                            <p class="text-gray-600 text-sm mb-4"><?php echo htmlspecialchars($book['summary']); ?></p>
+                            
+                            <?php if ($isLoggedIn): ?>
+                                <?php if ($book['status'] == 'available'): ?>
+                                    <button type="button" 
+                                            onclick="openBorrowModal('<?php echo $book['id']; ?>', '<?php echo htmlspecialchars($book['title']); ?>')"
+                                            class="w-full bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
+                                        Emprunter maintenant!
+                                    </button>
+                                <?php else: ?>
+                                    <?php
+                                    $stmt = $pdo->prepare("SELECT due_date FROM borrowings WHERE book_id = ? AND return_date IS NULL ORDER BY due_date DESC LIMIT 1");
+                                    $stmt->execute([$book['id']]);
+                                    $currentBorrowing = $stmt->fetch();
+                                    $dueDate = $currentBorrowing ? $currentBorrowing['due_date'] : date('Y-m-d');
+                                    ?>
+                                    <div class="text-sm text-gray-600 mb-2">
+                                        Date de retour prévue : <?php echo date('d/m/Y', strtotime($dueDate)); ?>
+                                    </div>
+                                    <button type="button" 
+                                            onclick="openReservationModal(
+                                                '<?php echo $book['id']; ?>', 
+                                                '<?php echo htmlspecialchars($book['title']); ?>', 
+                                                '<?php echo $dueDate; ?>'
+                                            )"
+                                            class="mt-2 px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600">
+                                        Réserver
+                                    </button>
+                                <?php endif; ?>
+                            <?php else: ?>
+                                <button type="button" 
+                                        onclick="return redirectToLogin()"
+                                        class="w-full bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
+                                    Se connecter pour emprunter
+                                </button>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
         </div>
-    <?php endif; ?>
-
-    <!-- Message de succes -->
-    <?php if ($message): ?>
-    <div id="success-message" class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">
-        <?php echo $message; ?>
-    </div>
-    <?php endif; ?>
-
-    <h1 class="text-3xl font-bold mb-8">
-        ALL BOOKS
-    </h1>
+    </main>
 
     <!-- Modal pour l'emprunt -->
     <div id="borrowModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden overflow-y-auto h-full w-full">
@@ -221,73 +309,6 @@ document.querySelector('#reservationModal > div').addEventListener('click', func
                 </div>
             </div>
         </div>
-    </div>
-
-    <!-- Barre de recherche -->
-    <div class="mb-6">
-        <input type="text" id="searchInput" placeholder="Rechercher un livre..." 
-               class="w-full p-2 border rounded-lg">
-    </div>
-
-    <!-- Filtre par catégorie -->
-    <div class="mb-6">
-        <select id="categoryFilter" class="w-full p-2 border rounded-lg">
-            <option value="">Toutes les catégories</option>
-            <?php foreach ($categories as $category): ?>
-                <option value="<?php echo $category['id']; ?>">
-                    <?php echo htmlspecialchars($category['name']); ?>
-                </option>
-            <?php endforeach; ?>
-        </select>
-    </div>
-
-    <!-- Container pour les livres -->
-    <div id="booksContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <?php foreach ($books as $book): ?>
-            <div class="text-center bg-gray-100 p-4 rounded-lg shadow-md">
-            <img alt="The Book of CSS3" class="w-full h-auto rounded-lg" height="300" src="<?php echo $book['cover_image']; ?>" width="200" />                
-                <p name="title" class="mt-4 text-lg font-semibold">
-                    <?php echo $book['title']; ?>
-                </p>
-
-                <p class="text-gray-700 mb-4"><?php echo htmlspecialchars($book['summary']); ?></p>
-                
-                <?php if ($isLoggedIn): ?>
-                    <?php if ($book['status'] == 'available'): ?>
-                        <button type="button" 
-                                onclick="openBorrowModal('<?php echo $book['id']; ?>', '<?php echo htmlspecialchars($book['title']); ?>')"
-                                class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
-                            Emprunter maintenant!
-                        </button>
-                    <?php else: ?>
-                        <?php
-                        $stmt = $pdo->prepare("SELECT due_date FROM borrowings WHERE book_id = ? AND return_date IS NULL ORDER BY due_date DESC LIMIT 1");
-                        $stmt->execute([$book['id']]);
-                        $currentBorrowing = $stmt->fetch();
-                        $dueDate = $currentBorrowing ? $currentBorrowing['due_date'] : date('Y-m-d');
-                        ?>
-                        <div class="text-sm text-gray-600 mb-2">
-                            Date de retour prévue : <?php echo date('d/m/Y', strtotime($dueDate)); ?>
-                        </div>
-                        <button type="button" 
-                                onclick="openReservationModal(
-                                    '<?php echo $book['id']; ?>', 
-                                    '<?php echo htmlspecialchars($book['title']); ?>', 
-                                    '<?php echo $dueDate; ?>'
-                                )"
-                                class="mt-2 px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600">
-                            Réserver
-                        </button>
-                    <?php endif; ?>
-                <?php else: ?>
-                    <button type="button" 
-                            onclick="return redirectToLogin()"
-                            class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
-                        Se connecter pour emprunter
-                    </button>
-                <?php endif; ?>
-            </div>
-        <?php endforeach; ?>
     </div>
 
     <script>
