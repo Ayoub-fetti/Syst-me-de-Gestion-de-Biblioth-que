@@ -108,58 +108,64 @@ if (isset($_POST['submit'])) {
             </div>
 
         <!-- Main Content -->
-        <div class="container mt-4">
-        <h2>Ajouter un Livre</h2>
-        
-        <?php if ($message): ?>
-            <div class="alert alert-success"><?php echo $message; ?></div>
-        <?php endif; ?>
+        <div class="flex-1 p-8">
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-2xl font-bold mb-6">Ajouter un Livre</h2>
+                
+                <?php if ($message): ?>
+                    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
+                        <?php echo $message; ?>
+                    </div>
+                <?php endif; ?>
 
-        <form method="POST" enctype="multipart/form-data">
-            <div class="mb-3">
-                <label class="form-label">Titre</label>
-                <input type="text" name="title" class="form-control" required>
-            </div>
-            
-            <div class="mb-3">
-                <label class="form-label">Auteur</label>
-                <input type="text" name="author" class="form-control" required>
-            </div>
-            
-            <div class="mb-3">
-                <label class="form-label">Catégorie</label>
-                <select name="category_id" class="form-control" required>
-                    <option value="">Sélectionner une catégorie</option>
-                    <?php foreach ($categories as $category): ?>
-                        <option value="<?php echo $category['id']; ?>">
-                            <?php echo htmlspecialchars($category['name']); ?>
-                        </option>
-                    <?php endforeach; ?>
-                </select>
-            </div>
-            
-            <div class="mb-3">
-                <label class="form-label">Image de couverture</label>
-                <input type="file" name="cover_image" class="form-control">
-            </div>
-            
-            <div class="mb-3">
-                <label class="form-label">Résumé</label>
-                <textarea name="summary" class="form-control" rows="3"></textarea>
-            </div>
-            
-            <div class="mb-3">
-                <label class="form-label">Status</label>
-                <select name="status" class="form-control" required>
-                    <option value="available">Disponible</option>
-                    <option value="borrowed">Emprunté</option>
-                </select>
-            </div>
+                <form method="POST" enctype="multipart/form-data">
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2">Titre</label>
+                        <input type="text" name="title" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2">Auteur</label>
+                        <input type="text" name="author" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2">Catégorie</label>
+                        <select name="category_id" class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                            <option value="">Sélectionner une catégorie</option>
+                            <?php foreach ($categories as $category): ?>
+                                <option value="<?php echo $category['id']; ?>">
+                                    <?php echo htmlspecialchars($category['name']); ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2">Image de couverture</label>
+                        <input type="file" name="cover_image" class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2">Résumé</label>
+                        <textarea name="summary" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" rows="3"></textarea>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <label class="block text-gray-700 text-sm font-bold mb-2">Status</label>
+                        <select name="status" class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                            <option value="available">Disponible</option>
+                            <option value="borrowed">Emprunté</option>
+                        </select>
+                    </div>
 
-            <button type="submit" name="submit" class="btn btn-primary">Ajouter</button>
-            <a href="admin_books.php" class="btn btn-secondary">Retour</a>
-        </form>
-    </div>
+                    <div class="flex items-center gap-4">
+                        <button type="submit" name="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Ajouter</button>
+                        <a href="admin_books.php" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Retour</a>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 </body>
 </html>
