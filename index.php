@@ -21,11 +21,7 @@ session_start();
     <div class="text-2xl font-bold">
      YouBiblio
     </div>
-    <div class="flex items-center space-x-2">
-     <input class="px-2 py-1 text-black" placeholder="Search category" type="text"/>
-     <button class="bg-red-600 px-4 py-1">
-      SEARCH
-     </button>
+
     </div>
 
    </div>
