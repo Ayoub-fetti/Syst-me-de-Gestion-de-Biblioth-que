@@ -9,41 +9,45 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body class="m-0 p-0">
-<header class="bg-black text-white w-full">
+
+<header class="bg-gray-800 text-white">
    <div class="container mx-auto flex justify-between items-center py-2 px-4">
     <div class="text-2xl font-bold">
      YouBiblio
     </div>
+
+    </div>
+
    </div>
-   <nav class="bg-gray-800">
+   <nav class="bg-blue-600">
     <div class="container mx-auto flex justify-between items-center py-2 px-4 text-sm">
-     <a class="text-white hover:text-blue-600 px-2" href="index.php">
+     <a class="text-white font-semibold hover:text-gray-300 px-2" href="index.php">
       ACCEUIL
      </a>
-     <a class="text-white hover:text-blue-600 px-2" href="Books.php">
+     <a class="text-white font-semibold hover:text-gray-300 px-2" href="Books.php">
       LIVRES
      </a>
-     <a class="text-white hover:text-blue-600 px-2" href="Books.php">
+     <a class="text-white font-semibold hover:text-gray-300 px-2" href="Books.php">
       CATEGORIES
      </a>
-     <a class="text-white hover:text-blue-600 px-2" href="Books.php">
+     <a class="text-white font-semibold hover:text-gray-300 px-2" href="Books.php">
       EMPRUNTER
      </a>
-     <a class="text-white hover:text-blue-600 px-2" href="Books.php">
+     <a class="text-white font-semibold hover:text-gray-300 px-2" href="Books.php">
       RESERVER
      </a>
-     <a class="text-white hover:text-blue-600 px-2" href="Contact.php">
+     <a class="text-white font-semibold hover:text-gray-300 px-2" href="#">
       CONTACT
      </a>
-     <a class="text-white hover:text-blue-600 px-2" href="register.php">
+     <a class="text-white font-semibold hover:text-gray-300 px-2" href="register.php">
       SING UP
      </a>
-     <a class="text-white hover:text-blue-600 px-2" href="login.php">
-      LOGIN 
+     <a class="text-white font-semibold hover:text-gray-300 px-2" href="login.php">
+    LOGIN 
      </a>
     </div>
    </nav>
-</header>
+  </header>
 
 <?php
 require_once 'connection.php';

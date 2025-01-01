@@ -16,7 +16,7 @@ session_start();
  </head>
  <body class="bg-white text-gray-800">
   <!-- Header -->
-  <header class="bg-black text-white">
+  <header class="bg-gray-800 text-white">
    <div class="container mx-auto flex justify-between items-center py-2 px-4">
     <div class="text-2xl font-bold">
      YouBiblio
@@ -25,30 +25,30 @@ session_start();
     </div>
 
    </div>
-   <nav class="bg-gray-800">
+   <nav class="bg-blue-600">
     <div class="container mx-auto flex justify-between items-center py-2 px-4 text-sm">
-     <a class="text-white hover:text-blue-600 px-2" href="index.php">
+     <a class="text-white font-semibold hover:text-gray-300 px-2" href="index.php">
       ACCEUIL
      </a>
-     <a class="text-white hover:text-blue-600 px-2" href="Books.php">
+     <a class="text-white font-semibold hover:text-gray-300 px-2" href="Books.php">
       LIVRES
      </a>
-     <a class="text-white hover:text-blue-600 px-2" href="Books.php">
+     <a class="text-white font-semibold hover:text-gray-300 px-2" href="Books.php">
       CATEGORIES
      </a>
-     <a class="text-white hover:text-blue-600 px-2" href="Books.php">
+     <a class="text-white font-semibold hover:text-gray-300 px-2" href="Books.php">
       EMPRUNTER
      </a>
-     <a class="text-white hover:text-blue-600 px-2" href="Books.php">
+     <a class="text-white font-semibold hover:text-gray-300 px-2" href="Books.php">
       RESERVER
      </a>
-     <a class="text-white hover:text-blue-600 px-2" href="Contact.php">
+     <a class="text-white font-semibold hover:text-gray-300 px-2" href="#">
       CONTACT
      </a>
-     <a class="text-white hover:text-blue-600 px-2" href="register.php">
+     <a class="text-white font-semibold hover:text-gray-300 px-2" href="register.php">
       SING UP
      </a>
-     <a class="text-white hover:text-blue-600 px-2" href="login.php">
+     <a class="text-white font-semibold hover:text-gray-300 px-2" href="login.php">
     LOGIN 
      </a>
     </div>
@@ -58,15 +58,15 @@ session_start();
   <main class="container mx-auto my-4">
    <!-- Hero Section -->
    <div class="relative">
-    <img alt="Library interior with bookshelves and statues" class="w-full h-96 object-cover" height="400" src="https://storage.googleapis.com/a1aa/image/t5AouAqr8QYIKF9SyDhhiaQvnniQaC9EpvNIQevD6ffxF38nA.jpg" width="1200"/>
+    <img alt="Library interior with bookshelves and statues" class="w-full h-96 object-cover" height="400" src="https://images.pexels.com/photos/16689057/pexels-photo-16689057/free-photo-of-livres-ecole-interieur-bibliotheque.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" width="1200"/>
     <div class="absolute inset-0 flex flex-col justify-center items-center text-white">
-     <h1 class="text-4xl font-bold">
+     <h1 class="text-4xl text-gray-100 font-bold">
       ONLINE BOOK LIBRARY
      </h1>
-     <p class="text-xl">
+     <p class="text-2xl font-semibold text-gray-100">
       La meilleure plateforme pour emprunter des livres
      </p>
-     <a href="Books.php" class="bg-blue-600 rounded-lg px-4 py-2 mt-4">
+     <a href="Books.php" class=" font-semibold bg-blue-600 hover:bg-white hover:text-blue-600 rounded-lg px-4 py-2 mt-4">
       Découvrire nos livres
 </a>
     </div>
