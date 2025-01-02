@@ -1,6 +1,6 @@
 <?php
-require_once 'connection.php';
-require_once 'classes/User.php';
+require_once '../connection.php';
+require_once '../classes/User.php';
 
 session_start();
 
@@ -14,16 +14,23 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'admin') {
 $db = new Database();
 $pdo = $db->connect();
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id'])) {
-    $user = new User($pdo);
-    $result = $user->deleteUser($_POST['id']);
+if (isset($_POST['id'])) {
+    $user = new User($pdo);  
     
-    if ($result['success']) {
-        $_SESSION['success_message'] = "Utilisateur supprimé avec succès";
+    // Vérifier que l'utilisateur existe et n'est pas admin
+    $userToDelete = $user->getUserById($_POST['id']);
+    if ($userToDelete && $userToDelete['role'] !== 'admin') {
+        $result = $user->deleteUser($_POST['id']);
+        
+        if ($result['success']) {
+            $_SESSION['success_message'] = "Utilisateur supprimé avec succès";
+        } else {
+            $_SESSION['error_message'] = $result['message'];
+        }
     } else {
-        $_SESSION['error_message'] = $result['message'];
+        $_SESSION['error_message'] = "Impossible de supprimer cet utilisateur";
     }
 }
 
 header('Location: admin_dashboard.php');
-exit(); 
+exit();
