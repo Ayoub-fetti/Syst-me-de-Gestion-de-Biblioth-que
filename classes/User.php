@@ -2,7 +2,7 @@
 
 require_once dirname(__DIR__) . '/connection.php';
 
-class user {
+class User {
     private $pdo;
     private $id;
     private $name;
@@ -72,11 +72,17 @@ class user {
 }
 
 // Get user by ID
-public function getUserById($id) {
-    $stmt = $this->pdo->prepare("SELECT * FROM users WHERE id = ?");
-    $stmt->execute([$id]);
-    return $stmt->fetch();
-}
+    public function getUserById($id) {
+        try {
+            $stmt = $this->pdo->prepare("SELECT * FROM users WHERE id = ?");
+            $stmt->execute([$id]);
+            $user = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $user ?: null;
+        } catch(PDOException $e) {
+            error_log("Error in getUserById: " . $e->getMessage());
+            return null;
+        }
+    }
 
 // Update user profile
 public function updateProfile($id, $name, $email) {
@@ -86,9 +92,7 @@ public function updateProfile($id, $name, $email) {
         return ['success' => true, 'message' => "Profil mis à jour avec succès"];
     } catch(PDOException $e) {
         return ['success' => false, 'message' => "Erreur lors de la mise à jour: " . $e->getMessage()];
-   
-
-}
+    }
 }
 
 // Recuperer tous les utilisateurs
